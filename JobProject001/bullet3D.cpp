@@ -93,7 +93,6 @@ void CBullet3D::Update(void)
 {
 	D3DXVECTOR3 pos = GetPosition();  //位置の取得
 	D3DXVECTOR3 move = GetMove();  //移動量の取得
-	D3DXVECTOR3 rot = GetRotation();  //向きの取得
 
 	int nID = m_nID;
 
@@ -105,9 +104,6 @@ void CBullet3D::Update(void)
 
 	m_nLife++;
 	m_nCntHit++;
-
-	//エフェクトの生成
-	CEffect::Create(D3DXVECTOR3(pos.x, pos.y - 10.0f, pos.z), D3DXVECTOR3(rot.x, rot.y, rot.z), D3DXVECTOR3(50.0f, 50.0f, 100.0f), CEffect::EFFECTTYPE_BEAM);
 
 	//タイプがプレイヤーの時
 	if (m_type == BULLETTYPE_PLAYER)
@@ -130,6 +126,8 @@ void CBullet3D::Update(void)
 			//自分の終了処理
 			Uninit();
 		}
+
+		CManager::GetInstance()->GetDebugProc()->Print("弾の位置 [%f, %f, %f]\n", pos.x, pos.y, pos.z);
 	}
 
 	//タイプが敵の時
@@ -154,6 +152,26 @@ void CBullet3D::Update(void)
 			Uninit();
 
 			m_nLife = 0;  //0に戻す
+		}
+	}
+
+	//タイプがチュートリアル用の時
+	if (m_type == BULLETTYPE_TUTORIAL)
+	{
+		//弾が消えるまでのカウント
+		if (m_nLife >= LIFE_PLAYER)
+		{
+			//削除処理
+			Uninit();
+
+			m_nLife = 0;  //0に戻す
+		}
+
+		//敵との当たり判定
+		if (CEnemy3D::CollisionBullet(this) == true)
+		{
+			//自分の終了処理
+			Uninit();
 		}
 	}
 }

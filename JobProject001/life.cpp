@@ -77,7 +77,7 @@ void CLife::Update(void)
 	//ボスのライフゲージだったとき
 	if (typetexLife == CLife::TYPE_BOSSLIFEGAUGE)
 	{
-		CEnemy3D::LifeGauge(this);  //敵のライフゲージ
+		CEnemy3D::LifeGauge(this);  //ライフゲージ更新
 	}
 }
 //-------------------------------------------------------

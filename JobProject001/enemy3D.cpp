@@ -76,6 +76,7 @@ HRESULT CEnemy3D::Init()
 	m_BossDownState = false;
 	m_CreateCore = false;
 	m_LifeState = false;
+	m_LifeGaugeSize = false;
 	SetSize(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	SetMove(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	m_BossBattel = BOSS_BATTEL_0;
@@ -379,6 +380,13 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 					//=============================================
 					if (typetex == TYPE_USUALLY)
 					{
+						float fAngleY = atan2f(posOldPlayer.z - pos.z, pos.x - posOldPlayer.x);
+
+						D3DXVECTOR3 fAngle = D3DXVECTOR3(posOldPlayer.x - pos.x, (posOldPlayer.y + 50.0f) - pos.y, posOldPlayer.z - pos.z);
+						D3DXVec3Normalize(&fAngle, &fAngle);
+
+						rot.y = fAngleY + 1.57f;
+
 						//プレイヤーが範囲内に入った時
 						if (pos.x - scale.x * USUALLY_COR_X - USUALLY_RANGE < posPlayer.x + scalePlayer.x * PLAYER_COL_X
 							&&  pos.x + scale.x * USUALLY_COR_X + USUALLY_RANGE > posPlayer.x - scalePlayer.x * PLAYER_COL_X
@@ -386,13 +394,6 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 							&&  pos.z - scale.z * USUALLY_COR_Z - USUALLY_RANGE < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 130.0f
 							&&  pos.z + scale.z * USUALLY_COR_Z + USUALLY_RANGE > posPlayer.z - scalePlayer.z * PLAYER_COL_Z + 130.0f)
 						{
-							float fAngleY = atan2f(posOldPlayer.z - pos.z, pos.x - posOldPlayer.x);
-
-							D3DXVECTOR3 fAngle = D3DXVECTOR3(posOldPlayer.x - pos.x, (posOldPlayer.y + 50.0f) - pos.y, posOldPlayer.z - pos.z);
-							D3DXVec3Normalize(&fAngle, &fAngle);
-
-							rot.y = fAngleY + 1.57f;
-
 							if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 							{
 								//エフェクトの生成
@@ -421,6 +422,13 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 					//=============================================
 					if (typetex == TYPE_BOSS)
 					{
+						float fAngleY = atan2f(posOldPlayer.z - pos.z, pos.x - posOldPlayer.x);
+
+						D3DXVECTOR3 fAngle = D3DXVECTOR3(posOldPlayer.x - pos.x, (posOldPlayer.y + 50.0f) - pos.y, posOldPlayer.z - pos.z);
+						D3DXVec3Normalize(&fAngle, &fAngle);
+
+						rot.y = fAngleY + 1.57f;
+
 						//プレイヤーが範囲内で入った時
 						if (pos.x - scale.x * USUALLY_COR_X - BOSS_RANGE < posPlayer.x + scalePlayer.x * PLAYER_COL_X
 							&&  pos.x + scale.x * USUALLY_COR_X + BOSS_RANGE > posPlayer.x - scalePlayer.x * PLAYER_COL_X
@@ -442,13 +450,6 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 							//ボスがダウン状態じゃないとき
 							if (m_apObject[nCnt]->m_BossDownState == false)
 							{
-								float fAngleY = atan2f(posOldPlayer.z - pos.z, pos.x - posOldPlayer.x);
-
-								D3DXVECTOR3 fAngle = D3DXVECTOR3(posOldPlayer.x - pos.x, (posOldPlayer.y + 50.0f) - pos.y, (posOldPlayer.z + 100.0f) - pos.z);
-								D3DXVec3Normalize(&fAngle, &fAngle);
-
-								rot.y = fAngleY + 1.57f;
-
 								if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 								{
 									//エフェクトの生成
@@ -459,6 +460,9 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 								{
 									//弾発射
 									CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
+
+									//エフェクトの生成
+									CEffect::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * EFFECTSPEED, fAngle.y * EFFECTSPEED, fAngle.z * EFFECTSPEED), D3DXVECTOR3(50.0f, 50.0f, 50.0f), CEffect::EFFECTTYPE_BEAM);
 
 									m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 								}
@@ -524,6 +528,15 @@ void CEnemy3D::UpdateEnemyState(void)
 	switch (m_state)
 	{
 	case ENEMYSTATE_NORMAL:
+
+		for (int nCnt = 0; nCnt < MAX_ENEMY; nCnt++)
+		{
+			//m_apObject[nCnt]がNULLじゃなかった時
+			if (m_apObject[nCnt] != NULL)
+			{
+				m_apObject[nCnt]->m_LifeGaugeSize = false;  //ライフゲージサイズが変更出来ない状態にする
+			}
+		}
 		break;
 
 	case ENEMYSTATE_DAMAGE:
@@ -672,7 +685,7 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 				//-------------------------------------------------------
 				//敵のデバック表示
 				//-------------------------------------------------------
-				CManager::GetInstance()->GetDebugProc()->Print("ボスがダウンするスピード [%d]\n", m_apObject[nCnt]->m_nCntDownSpeed);
+				//CManager::GetInstance()->GetDebugProc()->Print("ボスがダウンするスピード [%d]\n", m_apObject[nCnt]->m_nCntDownSpeed);
 			}
 		}
 	}
@@ -720,8 +733,8 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 				//自分の終了処理
 				m_apObject[nCnt]->Uninit();
 
-				//モード設定(リザルトに移行)
-				CManager::SetMode(CGame::MODE_RESULT);
+				//ゲームの状態の設定
+				CGame::SetGameState(CGame::GAMESTATE_END, 60);
 			}
 
 			//SEの再生
@@ -730,22 +743,23 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 
 		else
 		{
-			m_apObject[nCnt]->SetState(CObject::STATE_DAMAGE, 20);  //ダメージ状態
-			m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 60);  //ダメージ状態
+			//通常敵の時
+			if (typetex == TYPE_USUALLY || typetex == TYPE_BOSS)
+			{
+				m_apObject[nCnt]->SetState(CObject::STATE_DAMAGE, 20);  //ダメージ状態
+				m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 60);  //ダメージ状態
+				m_apObject[nCnt]->m_LifeGaugeSize = true;  //ライフゲージサイズが変更出来る状態にする
+			}
 
-			//SEの再生
-			pSound->PlaySound(SOUND_LABEL_SE_DAMAGE);
-		}
-
-		if (m_apObject[nCnt]->m_Life <= 0)
-		{
 			//チュートリアル敵の時
 			if (typetex == TYPE_TUTORIAL_ENE)
 			{
 				m_apObject[nCnt]->SetState(CObject::STATE_DAMAGE, 20);  //ダメージ状態
 				m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 60);  //ダメージ状態
-
 			}
+
+			//SEの再生
+			pSound->PlaySound(SOUND_LABEL_SE_DAMAGE);
 		}
 	}
 }
@@ -818,37 +832,35 @@ void CEnemy3D::LifeGauge(CLife *pLife)
 				int typetexEnemy = m_apObject[nCnt]->GetTypeTex();
 				int lifeEnemy = m_apObject[nCnt]->m_Life;  //ボスのライフ取得
 				D3DXVECTOR3 GaugeSize = pLife->GetSize();  //テクスチャサイズの取得
-
-				//ボスのライフゲージ
 				
-				if (lifeEnemy > 1100)
+				if (typetexEnemy == TYPE_BOSS)
 				{
-					pLife->SetCol(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
-				}
-
-				else if (lifeEnemy < 1100 && lifeEnemy > 500)
-				{
-					pLife->SetCol(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
-				}
-				
-				else if (lifeEnemy < 400)
-				{
-					pLife->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-				}
-
-				//ダメージを受けた時
-				if (m_apObject[nCnt]->m_state == ENEMYSTATE_DAMAGE)
-				{
-					if (typetexEnemy == TYPE_BOSS)
+					if (lifeEnemy > 1100)
 					{
-						GaugeSize.x -= lifeEnemy * 0.001f;  //テクスチャを小さくしていく
+						pLife->SetCol(D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f));
+					}
+
+					else if (lifeEnemy < 1100 && lifeEnemy > 500)
+					{
+						pLife->SetCol(D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f));
+					}
+
+					else if (lifeEnemy <= 400)
+					{
+						pLife->SetCol(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+					}
+
+					//ダメージを受けた時
+					if (m_apObject[nCnt]->m_state == ENEMYSTATE_DAMAGE && m_apObject[nCnt]->m_LifeGaugeSize == true)
+					{
+						GaugeSize.x -= 100.0f;  //テクスチャを小さくしていく
 					}
 				}
 
 				//-------------------------------------------------------
 				//敵のデバック表示
 				//-------------------------------------------------------
-				CManager::GetInstance()->GetDebugProc()->Print("ボスのライフゲージサイズ [%f]\n", GaugeSize.x);
+				//CManager::GetInstance()->GetDebugProc()->Print("ボスのライフゲージサイズ [%f]\n", GaugeSize.x);
 				
 				pLife->SetSize(GaugeSize);
 			}

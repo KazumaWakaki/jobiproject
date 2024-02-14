@@ -99,7 +99,7 @@ HRESULT CGame::Init(void)
 	//---------------------------------------------------------------
 	//プレイヤー3Dの生成
 	//---------------------------------------------------------------
-	CPlayer3D::Create(D3DXVECTOR3(0.0f, 100.0f, -5500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CPlayer3D::Create(D3DXVECTOR3(0.0f, 100.0f, 5500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//BGMの再生
 	pSound->PlaySound(SOUND_LABEL_BGM_GAME);
@@ -175,7 +175,7 @@ void CGame::Update(void)
 			m_gameState = GAMESTATE_NONE;  //何もしていない状態に設定
 
 			//モード設定(リザルトに移行)
-			//CManager::SetMode(MODE_RESULT);
+			CManager::SetMode(MODE_RESULT);
 			//CManager::GetFade()->Set(CScene::MODE_RESULT);
 
 			////モード設定(リザルト画面に移行)

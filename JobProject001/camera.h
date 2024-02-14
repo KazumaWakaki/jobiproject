@@ -32,8 +32,9 @@ public:
 	void SetRotation(D3DXVECTOR3 rot);  //向きの設定処理
 
 	//取得
-	D3DXVECTOR3 GetCameraPos(void) { return m_posV; }  //カメラ位置(デバッグ)
-	D3DXVECTOR3 GetCameraRot(void) { return m_rot; }   //カメラ角度の取得
+	D3DXVECTOR3 GetPosV(void) { return m_posV; }  //カメラ視点の取得
+	D3DXVECTOR3 GetPosR(void) { return m_posR; }  //カメラ注視点の取得
+	D3DXVECTOR3 GetRot(void) { return m_rot; }   //カメラ角度の取得
 
 	//関数
 	static void MoveCamera(CPlayer3D *pPlayer);  //追従処理

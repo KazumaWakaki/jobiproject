@@ -367,7 +367,7 @@ bool CModelSet::CollisionBullet(CBullet3D *pBullet)
 				//-------------------------------------------------------
 				//モデルのデバック表示
 				//-------------------------------------------------------
-				CManager::GetInstance()->GetDebugProc()->Print("コア破壊カウンター [%d]\n", m_apObject[nCnt]->m_nCntBreakCore);
+				//CManager::GetInstance()->GetDebugProc()->Print("コア破壊カウンター [%d]\n", m_apObject[nCnt]->m_nCntBreakCore);
 			}
 		}
 	}

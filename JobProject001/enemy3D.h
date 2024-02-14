@@ -105,6 +105,7 @@ private:
 	int m_nCntEnemyBullet;  //弾カウンター
 	int m_nCntDownSpeed;  //ボスがダウンするスピードカウンター
 	bool m_BossDownState;  //ボスのダウン管理
+	bool m_LifeGaugeSize;  //ライフゲージサイズの管理
 	ENEMYSTATE m_state;  //状態管理
 	BOSS_BATTEL m_BossBattel;  //ボスの戦闘態勢状態
 	TUTORIAL_ENESTATE m_TutorialEne;  //チュートリアル敵状態管理

@@ -672,13 +672,13 @@ bool CPlayer3D::CollisionEnemy(CEnemy3D *pEnemy)
 bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 {
 	//キーボードの取得
-	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();;
+	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
 
 	//ゲームパッドの取得
-	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();;
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
 	//サウンドの取得
-	CSound *pSound = CManager::GetInstance()->GetSound();;
+	CSound *pSound = CManager::GetInstance()->GetSound();
 
 	//種類を取得
 	CObject::TYPE type = pBullet->GetType();
@@ -695,7 +695,10 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 			D3DXVECTOR3 rotBullet = pBullet->GetRotation();  //弾の向き取得
 			D3DXVECTOR3 scaleBullet = pBullet->GetScale();  //弾の拡大率取得
 			D3DXVECTOR3 PLACOL = pos;  //プレイヤーの向きで当たり判定
-			D3DXVECTOR3 fAngle = D3DXVECTOR3(posBullet.x - pos.x, posBullet.y - pos.y, posBullet.z - pos.z);
+			CCamera *camera = CManager::GetInstance()->GetCamera();  //カメラのインスタンス取得
+			D3DXVECTOR3 PosV = camera->GetPosV();  //カメラの視点の取得
+			D3DXVECTOR3 PosR = camera->GetPosR();  //カメラの注視点の取得
+			D3DXVECTOR3 fAngle = D3DXVECTOR3(PosR.x - PosV.x, (PosR.y - 100.0f) - (PosV.y - 100.0f), PosR.z - PosV.z);
 			D3DXVec3Normalize(&fAngle, &fAngle);
 
 			PLACOL.x = pos.x + sinf(rot.y) * PLAYER_COL_X;
@@ -742,6 +745,11 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 
 				return TRUE;
 			}
+
+			//-------------------------------------------------------
+			//プレイヤーのデバック表示
+			//-------------------------------------------------------
+			CManager::GetInstance()->GetDebugProc()->Print("カメラの注視点 [%f, %f, %f]\n", fAngle.x, fAngle.y, fAngle.z);
 		}
 	}
 

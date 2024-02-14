@@ -310,7 +310,7 @@ void CCamera::MoveCamera(CPlayer3D *pPlayer)
 		//種類がプレイヤーの場合
 		if (type == CObject::TYPE_PLAYER)
 		{
-			D3DXVECTOR3 m_rot = m_apObject->GetCameraRot();  //向き
+			D3DXVECTOR3 m_rot = m_apObject->GetRot();  //向き
 			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();  //プレイヤーの位置の取得
 			D3DXVECTOR3 movePlayer = pPlayer->GetMove();  //プレイヤーの移動量の取得
 			D3DXVECTOR3 rotPlayer = pPlayer->GetRotation();  //プレイヤーの向きの取得
@@ -397,7 +397,7 @@ void CCamera::PlayerTriggerCamera(CPlayer3D *pPlayer)
 		//種類がプレイヤーの場合
 		if (type == CObject::TYPE_PLAYER)
 		{
-			D3DXVECTOR3 m_rot = m_apObject->GetCameraRot();  //向き
+			D3DXVECTOR3 m_rot = m_apObject->GetRot();  //向き
 			int PlaRes = pPlayer->GetStateRes();  //プレイヤーのリスポーン状態取得
 
 			//プレイヤーのリスポーン状態が待機のとき

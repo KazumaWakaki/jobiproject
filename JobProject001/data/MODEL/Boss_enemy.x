@@ -21210,7 +21210,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Documents\\ƒvƒƒOƒ‰ƒ€\\AŠˆ§ì\\JobProject001\\data\\TEXTURE\\UV\\Boss_UV.jpg";
+    "data\\TEXTURE\\UV\\Boss_UV.jpg";
    }
   }
  }

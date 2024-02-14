@@ -29,6 +29,7 @@ public:
 	{
 		BULLETTYPE_PLAYER = 0,  //プレイヤー
 		BULLETTYPE_ENEMY,  //敵
+		BULLETTYPE_TUTORIAL,  //チュートリアル用
 		BULLETTYPE_MAX
 	}BULLETTYPE;
 
