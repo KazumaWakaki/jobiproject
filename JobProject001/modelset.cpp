@@ -52,6 +52,8 @@ HRESULT CModelSet::Init()
 	m_nIdxModel[TYPE_SWORD] = pModel->Regist("data\\MODEL\\sword.x");  //日本刀
 	m_nIdxModel[TYPE_CHECKPOINT] = pModel->Regist("data\\MODEL\\neonfloor001.x");  //チェックポイント
 	m_nIdxModel[TYPE_BOSSCORE] = pModel->Regist("data\\MODEL\\core.x");  //ボスコア
+	m_nIdxModel[TYPE_BEAM_PLA] = pModel->Regist("data\\MODEL\\beameffect.x");  //ビーム
+	m_nIdxModel[TYPE_BEAM_ENE] = pModel->Regist("data\\MODEL\\beameffect.x");  //ビーム
 
 	//モデルの初期化処理
 	CObjectX::Init();
@@ -99,6 +101,7 @@ void CModelSet::Update()
 
 	D3DXVECTOR3 pos = GetPosition();  //位置の取得
 	D3DXVECTOR3 rot = GetRotation();  //向きの取得
+	D3DXVECTOR3 scale = GetScale();  //スケールの取得
 	int typetex = GetTypeTex();  //タイプ判定用
 
 #if _DEBUG
@@ -130,12 +133,6 @@ void CModelSet::Update()
 	}
 
 #endif
-
-	//Jキーが押されている時
-	//if (pInputKeyboard->GetPress(DIK_J) == true || pInputPad->CInputPad::GetJoyStickLX(0) > 0)
-	//{
-	//	pos.x -= 1.0f;
-	//}
 
 	//位置の補正
 	if (pos.x >= 10000.0f)
@@ -176,8 +173,21 @@ void CModelSet::Update()
 		rot.z = D3DX_PI;
 	}
 
+	if (typetex == TYPE_BEAM_PLA || typetex == TYPE_BEAM_ENE)
+	{
+		m_nCntBeamScale++;
+
+		scale.z += 0.08f;
+	}
+
 	SetPosition(pos);
 	SetRotation(rot);
+	SetScale(scale);
+
+	if (m_nCntBeamScale >70)
+	{
+		Uninit();
+	}
 
 	CEnemy3D::EnemyBattelState(this);  //敵別の戦闘態勢状態ごとの処理
 
@@ -249,6 +259,12 @@ CModelSet *CModelSet::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 scale
 //-------------------------------------------------------
 bool CModelSet::ModelCollision(CPlayer3D *pPlayer)
 {
+	//キーボードの取得
+	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
+
+	//ゲームパッドの取得
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
 	//サウンドの取得
 	CSound *pSound = CManager::GetInstance()->GetSound();
 
@@ -264,8 +280,11 @@ bool CModelSet::ModelCollision(CPlayer3D *pPlayer)
 			 //種類がプレイヤーの場合
 			if (type == CObject::TYPE_PLAYER)
 			{
+				D3DXVECTOR3 pos = m_apObject[nCnt]->GetPosition();  //位置の取得
 				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();  //プレイヤーの位置の取得
+				D3DXVECTOR3 rotPlayer = pPlayer->GetRotation();  //プレイヤーの向きの取得
 				D3DXVECTOR3 scalePlayer = pPlayer->GetScale();  //プレイヤーの拡大率の取得
+				D3DXVECTOR3 PLACOL = posPlayer;  //プレイヤーの向きで当たり判定
 				int typetex = m_apObject[nCnt]->GetTypeTex();  //タイプ判定用
 
 				//チェックポイントの時

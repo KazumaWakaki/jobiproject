@@ -30,6 +30,8 @@ public:
 		TYPE_SWORD = 0,  //日本刀
 		TYPE_CHECKPOINT,  //チェックポイント
 		TYPE_BOSSCORE,  //ボスコア
+		TYPE_BEAM_PLA,  //ビームプレイヤー
+		TYPE_BEAM_ENE,  //ビーム敵
 		TYPE_MAX
 	}TYPE;
 
@@ -91,6 +93,7 @@ private:
 	int m_nCntSword;  //日本刀の動きカウント
 	int m_nCntSwordAttack;  //日本刀の向きカウント
 	int m_nCntSwordRot;  //日本刀の向きカウント
+	int m_nCntBeamScale;  //ビームのスケールカウント
 	static int m_nCntBreakCore;  //コアの破壊された数カウンター
 	bool m_BreakCore;  //コアが壊れたかの確認用
 	BOSSCORESTATE m_BossCoreState;  //コアが壊れたかの管理

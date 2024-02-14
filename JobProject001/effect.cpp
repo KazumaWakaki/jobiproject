@@ -13,7 +13,7 @@
 #define TEXSIZE_X	(20.0f)        //テクスチャのサイズX
 #define TEXSIZE_Y	(20.0f)        //テクスチャのサイズY
 #define TEXSIZE_Z	(20.0f)        //テクスチャのサイズZ
-#define LIFE	    (20)           //寿命
+#define LIFE	    (3)           //寿命
 
 //-------------------------------------------------------
 //コンストラクタ
@@ -78,7 +78,7 @@ void CEffect::Update()
 
 	m_nLife++;
 
-	//弾が消えるまでのカウント
+	//エフェクトが消えるまでのカウント
 	if (m_nLife >= LIFE)
 	{
 		//削除処理

@@ -106,7 +106,7 @@ void CEnemy3D::Uninit(void)
 void CEnemy3D::Update(void)
 {
 	D3DXVECTOR3 pos = GetPosition();  //位置の取得
-	D3DXVECTOR3 m_move = GetMove();   //移動量の取得
+	D3DXVECTOR3 move = GetMove();   //移動量の取得
 	D3DXVECTOR3 rot = GetRotation();  //向きの取得
 	D3DXVECTOR3 posPlayer;
 	int typetex = GetTypeTex();  //種類取得
@@ -125,17 +125,17 @@ void CEnemy3D::Update(void)
 	if (typetex == TYPE_USUALLY)
 	{
 		//重力を加える
-		m_move.y -= 4.0f;
+		move.y -= 4.0f;
 	}
 
 	m_nCntHit++;
 
 	//位置の更新
-	pos += m_move;
+	pos += move;
 
 	//移動量を更新
-	m_move.x += (0.0f - m_move.x) * ENEMYSPEEDUP;
-	m_move.y += (0.0f - m_move.y) * ENEMYSPEEDUP;
+	move.x += (0.0f - move.x) * ENEMYSPEEDUP;
+	move.y += (0.0f - move.y) * ENEMYSPEEDUP;
 
 	//角度の補正
 	if (rot.y > D3DX_PI)
@@ -149,7 +149,7 @@ void CEnemy3D::Update(void)
 	}
 
 	SetPosition(pos);  //位置の設定
-	SetMove(m_move);  //移動量の設定
+	SetMove(move);  //移動量の設定
 	SetRotation(rot);  //向きの設定
 
 	CBlock3D::CollisionEnemy(this);  //ブロックとの当たり判定
@@ -396,14 +396,23 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 						{
 							if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 							{
-								//エフェクトの生成
-								CEffect::Create(D3DXVECTOR3(pos.x, pos.y, pos.z - 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(50.0f, 50.0f, 100.0f), CEffect::EFFECTTYPE_BLINKING);
+								D3DXMATERIAL redMat;
+								ZeroMemory(&redMat, sizeof(redMat));
+								redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+								redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+
+								m_apObject[nCnt]->SetMat(1, redMat);
 							}
 
 							if (m_apObject[nCnt]->m_nCntEnemyBullet == 100)
 							{
+								m_apObject[nCnt]->ResetMat();
+
 								//弾発射
 								CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
+
+								//ビーム生成
+								CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
 
 								m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 							}
@@ -452,17 +461,23 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 							{
 								if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 								{
-									//エフェクトの生成
-									CEffect::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 20.0f, 0.0f), CEffect::EFFECTTYPE_BLINKING);
+									D3DXMATERIAL redMat;
+									ZeroMemory(&redMat, sizeof(redMat));
+									redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+									redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+
+									m_apObject[nCnt]->SetMat(1, redMat);
 								}
 
 								if (m_apObject[nCnt]->m_nCntEnemyBullet == 100)
 								{
+									m_apObject[nCnt]->ResetMat();
+
 									//弾発射
 									CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
 
-									//エフェクトの生成
-									CEffect::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * EFFECTSPEED, fAngle.y * EFFECTSPEED, fAngle.z * EFFECTSPEED), D3DXVECTOR3(50.0f, 50.0f, 50.0f), CEffect::EFFECTTYPE_BEAM);
+									//ビーム生成
+									CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
 
 									m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 								}
@@ -495,12 +510,18 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 							{
 								if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 								{
-									//エフェクトの生成
-									CEffect::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 20.0f, 0.0f), CEffect::EFFECTTYPE_BLINKING);
+									D3DXMATERIAL redMat;
+									ZeroMemory(&redMat, sizeof(redMat));
+									redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+									redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+
+									m_apObject[nCnt]->SetMat(0, redMat);
 								}
 
 								if (m_apObject[nCnt]->m_nCntEnemyBullet == 100)
 								{
+									m_apObject[nCnt]->ResetMat();
+
 									//弾発射
 									CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
 
@@ -541,25 +562,20 @@ void CEnemy3D::UpdateEnemyState(void)
 
 	case ENEMYSTATE_DAMAGE:
 
-		for (int nCnt = 0; nCnt < MAX_ENEMY; nCnt++)
-		{
-			//m_apObject[nCnt]がNULLじゃなかった時
-			if (m_apObject[nCnt] != NULL)
-			{
-				//D3DXVECTOR3 pos = m_apObject[nCnt]->GetPosition();  //位置の取得
-				//D3DXVECTOR3 m_move = m_apObject[nCnt]->GetMove();	  //移動量の取得
-
-				//値を設定
-				//m_apObject[nCnt]->SetPosition(pos);  //位置の設定
-				//m_apObject[nCnt]->SetMove(m_move);  //移動量の設定
-			}
-		}
-
 		m_nCounterState--;
 
 		if (m_nCounterState <= 0)
 		{
 			m_state = ENEMYSTATE_NORMAL;
+
+			for (int nCnt = 0; nCnt < MAX_ENEMY; nCnt++)
+			{
+				//m_apObject[nCnt]がNULLじゃなかった時
+				if (m_apObject[nCnt] != NULL)
+				{
+					m_apObject[nCnt]->ResetMat();
+				}
+			}
 
 			break;
 		}
@@ -747,7 +763,14 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 			if (typetex == TYPE_USUALLY || typetex == TYPE_BOSS)
 			{
 				m_apObject[nCnt]->SetState(CObject::STATE_DAMAGE, 20);  //ダメージ状態
-				m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 60);  //ダメージ状態
+				m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 20);  //ダメージ状態
+
+				D3DXMATERIAL redMat;
+				ZeroMemory(&redMat, sizeof(redMat));
+				redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+				redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+
+				 m_apObject[nCnt]->SetMat(0, redMat);
 				m_apObject[nCnt]->m_LifeGaugeSize = true;  //ライフゲージサイズが変更出来る状態にする
 			}
 

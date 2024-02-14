@@ -157,6 +157,7 @@
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="effectbeam.cpp" />
     <ClCompile Include="enemy3D.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="game.cpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="camera.h" />
     <ClInclude Include="debugproc.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="effectbeam.h" />
     <ClInclude Include="enemy3D.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="game.h" />

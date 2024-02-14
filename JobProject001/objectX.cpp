@@ -46,6 +46,8 @@ HRESULT CObjectX::Init(void)
 	//{
 	//}
 
+	LPDIRECT3DTEXTURE9 m_apTexture[8] = {};  //テクスチャへのポインタ
+
 	return (S_OK);
 }
 //=======================================================
@@ -111,36 +113,12 @@ void CObjectX::Draw(void)
 	pDevice->GetMaterial(&matDef);
 
 	//マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)pModel->m_pBuffMat->GetBufferPointer();
+	//pMat = (D3DXMATERIAL*)pModel->m_pBuffMat->GetBufferPointer();
 	 
 	for (int nCntMat = 0; nCntMat < (int)pModel->m_dwNumMat; nCntMat++)
 	{
-		int m_State = GetState();
-
-		MatCopy[nCntMat] = pMat[nCntMat];
-
-		//プレイヤーの状態
-		switch (m_State)
-		{
-		case STATE_NORMAL:
-
-			pMat[nCntMat].MatD3D;
-
-			break;
-
-		case STATE_DAMAGE:
-
-			//MatCopy[nCntMat].MatD3D.Ambient = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-			MatCopy[nCntMat].MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-			MatCopy[nCntMat].MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-
-		case STATE_DEATH:
-
-			break;
-		}
-
 		//マテリアルの設定
-		pDevice->SetMaterial(&MatCopy[nCntMat].MatD3D);
+		pDevice->SetMaterial(&m_DrawMat[nCntMat].MatD3D);
 
 		//テクスチャの設定
 		pDevice->SetTexture(0, CManager::GetInstance()->GetTexture()->GetAddress(pModel->pIndxTex[nCntMat]));
@@ -244,4 +222,29 @@ void CObjectX::SetTypeTex(int Type)
 void CObjectX::BindModel(int nIdx)
 {
 	m_nIdxModel = nIdx;
+	ResetMat();
+}
+//-------------------------------------------------------
+//モデルの割り当て
+//-------------------------------------------------------
+void CObjectX::SetMat(int nIdx, D3DXMATERIAL mat)
+{
+	m_DrawMat[nIdx] = mat;
+}
+//-------------------------------------------------------
+//モデルの割り当て
+//-------------------------------------------------------
+void CObjectX::ResetMat()
+{
+	D3DXMATERIAL *pMat;  //マテリアルデータへのポインタ
+
+	CModel::Model *pModel = CManager::GetInstance()->GetModel()->GetAddress(m_nIdxModel);
+
+	//マテリアルデータへのポインタを取得
+	pMat = (D3DXMATERIAL*)pModel->m_pBuffMat->GetBufferPointer();
+
+	for (int nCntMat = 0; nCntMat < (int)pModel->m_dwNumMat; nCntMat++)
+	{
+		m_DrawMat[nCntMat] = pMat[nCntMat];
+	}
 }

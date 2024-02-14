@@ -8,7 +8,7 @@
 #include "manager.h"
 #include "explosion.h"
 #include "block3D.h"
-#include "effect.h"
+#include "effectbeam.h"
 #include "modelset.h"
 
 //マクロ定義
@@ -20,7 +20,7 @@
 
 //静的メンバ変数
 CBullet3D *CBullet3D::m_apObject[MAX_BULLET] = {};
-
+bool CBullet3D::m_Beam = false;
 //-------------------------------------------------------
 //コンストラクタ
 //-------------------------------------------------------
@@ -65,6 +65,7 @@ HRESULT CBullet3D::Init(void)
 	//値のクリア
 	m_nLife = 0;
 	m_nCntHit = 0;
+	m_Beam = false;
 
 	//種類の設定
 	CObject::SetType(TYPE_BULLET);
@@ -105,6 +106,14 @@ void CBullet3D::Update(void)
 	m_nLife++;
 	m_nCntHit++;
 
+	if (m_Beam == false)
+	{
+		////ビーム生成
+		//CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM);
+
+		m_Beam = true;
+	}
+	
 	//タイプがプレイヤーの時
 	if (m_type == BULLETTYPE_PLAYER)
 	{
@@ -181,7 +190,7 @@ void CBullet3D::Update(void)
 void CBullet3D::Draw(void)
 {
 	//オブジェクトの描画処理
-	CObjectX::Draw();
+	//CObjectX::Draw();
 }
 //-------------------------------------------------------
 //生成処理
@@ -212,6 +221,9 @@ CBullet3D *CBullet3D::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot,
 
 		//種類の設定
 		pBullet->SetTypeBullet(type);
+
+		//ビームがない状態にする
+		m_Beam = false;
 
 		//敵の弾の移動量設定
 		if (pBullet->m_type == BULLETTYPE_ENEMY)

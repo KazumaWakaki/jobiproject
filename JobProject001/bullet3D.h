@@ -53,11 +53,12 @@ public:
 	static bool CollisionBlock(CBlock3D *pBlock);   //ブロックとの当たり判定
 
 private:
-	int m_nLife;	     //寿命
-	int m_nIdxModel[BULLETTYPE_MAX];     //モデル割り当て
-	int m_type;          //弾のタイプ
-	int m_nID;           //番号
+	int m_nLife;	 //寿命
+	int m_nIdxModel[BULLETTYPE_MAX];  //モデル割り当て
+	int m_type;  //弾のタイプ
+	int m_nID;  //番号
 	int m_nCntHit;  //ダメージ状態のカウント
+	static bool m_Beam;  //ビームの管理
 	static CBullet3D *m_apObject[MAX_BULLET];  //オブジェクトクラスのポインタ
 };
 

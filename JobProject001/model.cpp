@@ -12,7 +12,6 @@
 CModel::Model CModel::m_apModel[MAX_MODEL] = {};
 char CModel::m_FileName[MAX_MODEL][512] = {};
 int  CModel::m_nNumAll = 0;
-
 //-------------------------------------------------------
 //コンストラクタ
 //-------------------------------------------------------
@@ -69,7 +68,7 @@ int CModel::Regist(const char *pFilename)
 
 	nIdx = m_nNumAll + 1;  //保存
 
-						   //m_nNumAll分回す
+	//m_nNumAll分回す
 	for (int nCntModel = 0; nCntModel < m_nNumAll; nCntModel++)
 	{
 		if (strcmp(&m_FileName[nCntModel][0], pFilename) == 0)

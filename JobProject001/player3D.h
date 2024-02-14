@@ -19,7 +19,7 @@ class CGauge;
 //マクロ定義
 #define PLAYERSPEED (2.5f)  //移動時のスピード
 #define PLAYERSPEEDUP (0.2f)  //移動量更新時のスピード
-#define STEPSPEED (10.0f)  //ステップ時のスピード
+#define STEPSPEED (100.0f)  //ステップ時のスピード
 #define PLAYER_COL_X (95.0f)  //プレイヤーの拡大率分補正X
 #define PLAYER_COL_Y (400.0f)  //プレイヤーの拡大率分補正Y
 #define PLAYER_COL_Z (66.0f)  //プレイヤーの拡大率分補正Z
