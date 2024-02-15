@@ -137,85 +137,94 @@ void CPlayer3D::Update()
 	///////////////////////////////////////////
 	if (m_StateRes == STATERES_NONE)
 	{
-		///////////////////////////////////////////
-		//プレイヤーキーボード操作
-		///////////////////////////////////////////
-		//Dキーが押されている時
-		if (pInputKeyboard->GetPress(DIK_D) == true
-			|| pInputPad->CInputPad::GetJoyStickLX(0) > 0)
+		if (m_jump == PLAYERJUMP_GROUND || m_jump == PLAYERJUMP_SKY || m_jump == PLAYERJUMP_GETOFF)
 		{
-			//Dキーが押されている時にWキーが押されている時
-			if (pInputKeyboard->GetPress(DIK_W) == true
-				|| pInputPad->CInputPad::GetJoyStickLY(0) > 0)
+			///////////////////////////////////////////
+			//プレイヤーキーボード操作
+			///////////////////////////////////////////
+			//Dキーが押されている時
+			if (pInputKeyboard->GetPress(DIK_D) == true
+				|| pInputPad->CInputPad::GetJoyStickLX(0) > 0)
 			{
-				//右上移動
-				move.x += sinf(rot.y + D3DX_PI * -0.75f) * PLAYERSPEED;
-				move.z += cosf(rot.y + D3DX_PI * -0.75f) * PLAYERSPEED;
+				//Dキーが押されている時にWキーが押されている時
+				if (pInputKeyboard->GetPress(DIK_W) == true
+					|| pInputPad->CInputPad::GetJoyStickLY(0) > 0)
+				{
+					//右上移動
+					move.x += sinf(rot.y + D3DX_PI * -0.75f) * PLAYERSPEED;
+					move.z += cosf(rot.y + D3DX_PI * -0.75f) * PLAYERSPEED;
+				}
+
+				//Dキーが押されている時にSキーが押されている時
+				else if (pInputKeyboard->GetPress(DIK_S) == true
+					|| pInputPad->CInputPad::GetJoyStickLY(0) < 0)
+				{
+					//右下移動
+					move.x += sinf(rot.y + D3DX_PI * -0.25f) * PLAYERSPEED;
+					move.z += cosf(rot.y + D3DX_PI * -0.25f) * PLAYERSPEED;
+				}
+
+				else
+				{
+					//Dキーが押された
+					move.x += sinf(rot.y + D3DX_PI * -0.5f) * PLAYERSPEED;
+					move.z += cosf(rot.y + D3DX_PI * -0.5f) * PLAYERSPEED;
+				}
 			}
 
-			//Dキーが押されている時にSキーが押されている時
+			//Aキーが押されている時
+			else if (pInputKeyboard->GetPress(DIK_A) == true
+				|| pInputPad->CInputPad::GetJoyStickLX(0) < 0)
+			{
+				//Aキーが押されている時にWキーが押されている時
+				if (pInputKeyboard->GetPress(DIK_W) == true
+					|| pInputPad->CInputPad::GetJoyStickLY(0) > 0)
+				{
+					//左上移動
+					move.x += sinf(rot.y + D3DX_PI * 0.75f) * PLAYERSPEED;
+					move.z += cosf(rot.y + D3DX_PI * 0.75f) * PLAYERSPEED;
+				}
+
+				//Aキーが押されている時にSキーが押されている時
+				else if (pInputKeyboard->GetPress(DIK_S) == true
+					|| pInputPad->CInputPad::GetJoyStickLY(0) < 0)
+				{
+					//左下移動
+					move.x += sinf(rot.y + D3DX_PI * 0.25f) * PLAYERSPEED;
+					move.z += cosf(rot.y + D3DX_PI * 0.25f) * PLAYERSPEED;
+				}
+
+				else
+				{
+					//Aキーが押された
+					move.x += sinf(rot.y + D3DX_PI * 0.5f) * PLAYERSPEED;
+					move.z += cosf(rot.y + D3DX_PI * 0.5f) * PLAYERSPEED;
+				}
+			}
+
+			//Wキーが押されている時
+			else if (pInputKeyboard->GetPress(DIK_W) == true
+				|| pInputPad->CInputPad::GetJoyStickLY(0) > 0)
+			{
+				//Wキーが押された
+				move.x += sinf(rot.y + D3DX_PI) * PLAYERSPEED;
+				move.z += cosf(rot.y + D3DX_PI) * PLAYERSPEED;
+			}
+
+			//Sキーが押されている時
 			else if (pInputKeyboard->GetPress(DIK_S) == true
 				|| pInputPad->CInputPad::GetJoyStickLY(0) < 0)
 			{
-				//右下移動
-				move.x += sinf(rot.y + D3DX_PI * -0.25f) * PLAYERSPEED;
-				move.z += cosf(rot.y + D3DX_PI * -0.25f) * PLAYERSPEED;
-			}
-
-			else
-			{
-				//Dキーが押された
-				move.x += sinf(rot.y + D3DX_PI * -0.5f) * PLAYERSPEED;
-				move.z += cosf(rot.y + D3DX_PI * -0.5f) * PLAYERSPEED;
+				//Sキーが押された
+				move.x += sinf(rot.y) * PLAYERSPEED;
+				move.z += cosf(rot.y) * PLAYERSPEED;
 			}
 		}
 
-		//Aキーが押されている時
-		else if (pInputKeyboard->GetPress(DIK_A) == true
-			|| pInputPad->CInputPad::GetJoyStickLX(0) < 0)
+		if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
 		{
-			//Aキーが押されている時にWキーが押されている時
-			if (pInputKeyboard->GetPress(DIK_W) == true
-				|| pInputPad->CInputPad::GetJoyStickLY(0) > 0)
-			{
-				//左上移動
-				move.x += sinf(rot.y + D3DX_PI * 0.75f) * PLAYERSPEED;
-				move.z += cosf(rot.y + D3DX_PI * 0.75f) * PLAYERSPEED;
-			}
-
-			//Aキーが押されている時にSキーが押されている時
-			else if (pInputKeyboard->GetPress(DIK_S) == true
-				|| pInputPad->CInputPad::GetJoyStickLY(0) < 0)
-			{
-				//左下移動
-				move.x += sinf(rot.y + D3DX_PI * 0.25f) * PLAYERSPEED;
-				move.z += cosf(rot.y + D3DX_PI * 0.25f) * PLAYERSPEED;
-			}
-
-			else
-			{
-				//Aキーが押された
-				move.x += sinf(rot.y + D3DX_PI * 0.5f) * PLAYERSPEED;
-				move.z += cosf(rot.y + D3DX_PI * 0.5f) * PLAYERSPEED;
-			}
-		}
-
-		//Wキーが押されている時
-		else if (pInputKeyboard->GetPress(DIK_W) == true
-			|| pInputPad->CInputPad::GetJoyStickLY(0) > 0)
-		{
-			//Wキーが押された
-			move.x += sinf(rot.y + D3DX_PI) * PLAYERSPEED;
-			move.z += cosf(rot.y + D3DX_PI) * PLAYERSPEED;
-		}
-
-		//Sキーが押されている時
-		else if (pInputKeyboard->GetPress(DIK_S) == true
-			|| pInputPad->CInputPad::GetJoyStickLY(0) < 0)
-		{
-			//Sキーが押された
-			move.x += sinf(rot.y) * PLAYERSPEED;
-			move.z += cosf(rot.y) * PLAYERSPEED;
+			//前に進む
+			move.z += cosf(rot.y + D3DX_PI) * WALLRUNSPEED;
 		}
 
 		//ジャンプ
@@ -228,14 +237,14 @@ void CPlayer3D::Update()
 
 			m_nCntDown = 0;
 
-			m_jump = PLAYERJUMP_SKY;  //ジャンプしている状態にする
+			m_jump = PLAYERJUMP_GETOFF;  //ジャンプしている状態にする
 
 			//SEの再生
 			pSound->PlaySound(SOUND_LABEL_SE_JAMP);
 		}
 
 		//壁走り中のジャンプ(右から)
-		else if (pInputKeyboard->GetTrigger(DIK_SPACE) == true && m_jump == PLAYERJUMP_WALLRUN_R   //SPACEが押された時
+		if (pInputKeyboard->GetTrigger(DIK_SPACE) == true && m_jump == PLAYERJUMP_WALLRUN_R   //SPACEが押された時
 			|| pInputPad->GetTrigger(CInputPad::BUTTON_A, 0) && m_jump == PLAYERJUMP_WALLRUN_R)  //Aボタンが押された時
 		{
 			//左に跳ぶ
@@ -248,14 +257,14 @@ void CPlayer3D::Update()
 
 			m_nCntDown = 0;
 
-			m_jump = PLAYERJUMP_SKY;  //ジャンプしている状態にする
+			m_jump = PLAYERJUMP_GETOFF;  //ジャンプしている状態にする
 
 			//SEの再生
 			pSound->PlaySound(SOUND_LABEL_SE_JAMP);
 		}
 
 		//壁走り中のジャンプ(左から)
-		else if (pInputKeyboard->GetTrigger(DIK_SPACE) == true && m_jump == PLAYERJUMP_WALLRUN_L   //SPACEが押された時
+		if (pInputKeyboard->GetTrigger(DIK_SPACE) == true && m_jump == PLAYERJUMP_WALLRUN_L   //SPACEが押された時
 			|| pInputPad->GetTrigger(CInputPad::BUTTON_A, 0) && m_jump == PLAYERJUMP_WALLRUN_L)  //Aボタンが押された時
 		{
 			//右に跳ぶ
@@ -293,13 +302,15 @@ void CPlayer3D::Update()
 		//ステップ状態がfalseの時
 		if (m_Step == false)
 		{
-			if (m_jump == PLAYERJUMP_GROUND || m_jump == PLAYERJUMP_SKY)
+			if (m_jump == PLAYERJUMP_GROUND || m_jump == PLAYERJUMP_SKY || m_jump == PLAYERJUMP_GETOFF)
 			{
 				//重力を加える
 				move.y -= 4.0f;
+
+				//m_jump = PLAYERJUMP_GETOFF;
 			}
 
-			else if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
+			if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
 			{
 				//重力を加える
 				move.y -= 1.0f;

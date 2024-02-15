@@ -274,12 +274,6 @@ bool CBullet3D::CollisionBlock(CBlock3D *pBlock)
 						&&  pos.z + m_scale.z > posBlock.z - scaleBlock.z
 						&&  pos.z - m_scale.z < posBlock.z + scaleBlock.z) 
 					{
-						//”š”­‚Ì¶¬
- 						CExplosion::Create(D3DXVECTOR3(pos.x, pos.y, pos.z));
-
-						//SE‚ÌÄ¶
-						pSound->PlaySound(SOUND_LABEL_SE_EXPLOSION);
-
 						//’e‚ÌI—¹ˆ—
 						m_apObject[nCnt]->Uninit();
 

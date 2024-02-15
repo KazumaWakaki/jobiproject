@@ -412,7 +412,7 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 								CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
 
 								//ビーム生成
-								CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
+								CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
 
 								m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 							}
@@ -730,7 +730,7 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 			if (typetex == TYPE_USUALLY)
 			{
 				//爆発の生成
-				CExplosion::Create(D3DXVECTOR3(pos.x, pos.y + 50.0f, pos.z));
+				CExplosion::Create(D3DXVECTOR3(pos.x, pos.y + 50.0f, pos.z), D3DXVECTOR3(200.0f, 200.0f, 0.0f));
 
 				//死亡状態
 				m_apObject[nCnt]->SetState(CObject::STATE_DEATH, 0);
@@ -743,7 +743,7 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 			else if (typetex == TYPE_BOSS)
 			{
 				//爆発の生成
-				CExplosion::Create(D3DXVECTOR3(pos.x, pos.y + 50.0f, pos.z));
+				CExplosion::Create(D3DXVECTOR3(pos.x, pos.y + 50.0f, pos.z), D3DXVECTOR3(200.0f, 200.0f, 0.0f));
 
 				//死亡状態
 				m_apObject[nCnt]->SetState(CObject::STATE_DEATH, 0);

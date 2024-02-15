@@ -36,8 +36,6 @@ HRESULT CExplosion::Init()
 
 	m_nIdxTexture = pTexture->Regist("data\\texture\\explosion000.png");
 
-	SetSize(D3DXVECTOR3(10.0f, 10.0f, 10.0f));
-
 	//オブジェクトビルボードの初期化処理
 	CBillboard::Init();
 
@@ -73,7 +71,7 @@ void CExplosion::Draw()
 //-------------------------------------------------------
 //生成処理
 //-------------------------------------------------------
-CExplosion *CExplosion::Create(D3DXVECTOR3 pos)
+CExplosion *CExplosion::Create(D3DXVECTOR3 pos, D3DXVECTOR3 size)
 {
 	CExplosion *pExplosion = NULL;
 
@@ -91,6 +89,9 @@ CExplosion *CExplosion::Create(D3DXVECTOR3 pos)
 		//爆発の位置の設定
 		pExplosion->SetPosition(pos);
 
+		//爆発のサイズの設定
+		pExplosion->SetSize(size);
+
 		//テクスチャ設定
 		pExplosion->SetVtx(pExplosion->m_nPatternAnim, MAX_HEIFGHTPATTERN, MAX_ANIMPATTERN / MAX_HEIFGHTPATTERN);
 
@@ -106,7 +107,7 @@ CExplosion *CExplosion::Create(D3DXVECTOR3 pos)
 	return pExplosion;
 }
 //-------------------------------------------------------
-//7操作処理
+//アニメーション処理
 //-------------------------------------------------------
 void CExplosion::Anim(void)
 {

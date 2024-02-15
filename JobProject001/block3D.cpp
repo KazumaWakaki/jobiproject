@@ -321,18 +321,14 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 							{//左
 								posPlayer.x = m_pos.x - m_Scale.x * NEON_COL - 179.0f;  //ブロックの左から抜けない
 
-								//前に進む
-								movePlayer.x += sinf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
-								movePlayer.z += cosf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
-
 								if (rotPlayer.y > 1.57f || rotPlayer.y < -1.57f)
 								{
-									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_R);  //プレイヤーを右からの壁走り状態にする
+									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_L);  //プレイヤーを右からの壁走り状態にする
 								}
 
-								else if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
+								if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
 								{
-									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_L);  //プレイヤーを左からの壁走り状態にする
+									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_R);  //プレイヤーを左からの壁走り状態にする
 								}
 							}
 
@@ -341,16 +337,12 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 							{//右
 								posPlayer.x = m_pos.x + m_Scale.x * NEON_COL + 179.0f;  //ブロックの右から抜けない
 
-								//前に進む
-								movePlayer.x += sinf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
-								movePlayer.z += cosf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
-
-								if (rotPlayer.y > 1.57f || rotPlayer.y < -1.57f)
+								if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
 								{
 									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_R);  //プレイヤーを右からの壁走り状態にする
 								}
 
-								else if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
+								if (rotPlayer.y > 1.57f || rotPlayer.y < -1.57f)
 								{
 									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_L);  //プレイヤーを左からの壁走り状態にする
 								}

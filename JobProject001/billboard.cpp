@@ -259,15 +259,22 @@ void CBillboard::SetVtx(const int nPatternAnim, const int nTexWidth, const int n
 {
 	VERTEX_3D *pVtx;
 
-	//頂点バッファをロックし頂点情報へのポインタを取得
-	m_pVtxBuff->Lock(
-		0,
-		0,
-		(void**)&pVtx,
-		0
-	);
+	//頂点バッファをロックし、頂点データへのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	//頂点座標の設定
+	pVtx[0].pos = D3DXVECTOR3(-m_size.x, +m_size.y, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(+m_size.x, +m_size.y, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(-m_size.x, -m_size.y, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(+m_size.x, -m_size.y, 0.0f);
+
+	//法線ベクトルの設定
+	pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	pVtx[1].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	pVtx[2].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+	pVtx[3].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+
+	//テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(1.0f / nTexWidth * (float)nPatternAnim, (1.0f / nTexHeight * (float)(nPatternAnim / nTexWidth)));
 	pVtx[1].tex = D3DXVECTOR2(1.0f / nTexWidth * (float)(nPatternAnim + 1), (1.0f / nTexHeight * (float)(nPatternAnim / nTexWidth)));
 	pVtx[2].tex = D3DXVECTOR2(1.0f / nTexWidth * (float)nPatternAnim, (1.0f / nTexHeight * (float)(nPatternAnim / nTexWidth + 1)));

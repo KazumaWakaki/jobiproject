@@ -17,14 +17,14 @@ public:
 	~CExplosion();  //デストラクタ
 
 	//メンバ関数
-	HRESULT Init(void);                          //初期化処理
-	void Uninit(void);	                         //終了処理
-	void Update(void);	                         //更新処理
-	void Draw(void);	                         //描画処理
-	static CExplosion *Create(D3DXVECTOR3 pos);  //爆発生成
+	HRESULT Init(void);  //初期化処理
+	void Uninit(void);	 //終了処理
+	void Update(void);  //更新処理
+	void Draw(void);  //描画処理
+	static CExplosion *Create(D3DXVECTOR3 pos, D3DXVECTOR3 size);  //爆発生成
 
 	//メンバ関数
-	void Anim(void);
+	void Anim(void);  //アニメーション処理
 
 private:
 	int m_nIdxTexture;  //テクスチャ
