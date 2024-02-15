@@ -114,73 +114,53 @@ void CBullet3D::Update(void)
 		m_Beam = true;
 	}
 	
-	//タイプがプレイヤーの時
-	if (m_type == BULLETTYPE_PLAYER)
+	for (int nCnt = 0; nCnt < MAX_BULLET; nCnt++)
 	{
-		//弾が消えるまでのカウント
-		if (m_nLife >= LIFE_PLAYER)
+		if (m_apObject[nCnt] != nullptr)
 		{
-			//削除処理
-			Uninit();
-
-			m_nLife = 0;  //0に戻す
-		}
-
-		//モデルとの当たり判定
-		CModelSet::CollisionBullet(this);
-
-		//敵との当たり判定
-		if (CEnemy3D::CollisionBullet(this) == true)
-		{
-			//自分の終了処理
-			Uninit();
-		}
-
-		CManager::GetInstance()->GetDebugProc()->Print("弾の位置 [%f, %f, %f]\n", pos.x, pos.y, pos.z);
-	}
-
-	//タイプが敵の時
-	if (m_type == BULLETTYPE_ENEMY)
-	{
-		if (m_nCntHit >= 10)
-		{
-			//プレイヤーとの当たり判定
-			if (CPlayer3D::CollisionBullet(this) == true)
+			//タイプがプレイヤーの時
+			if (m_type == BULLETTYPE_PLAYER)
 			{
-				//自分の終了処理
-				Uninit();
+				//弾が消えるまでのカウント
+				if (m_nLife >= LIFE_PLAYER)
+				{
+					//削除処理
+					Uninit();
 
-				m_nCntHit = 0;  //カウントを0にリセットする
+					m_nLife = 0;  //0に戻す
+				}
+
+				//敵との当たり判定
+				CEnemy3D::CollisionBullet(this);
+
+				//モデルとの当たり判定
+				CModelSet::CollisionBullet(this);
 			}
-		}
 
-		//弾が消えるまでのカウント
-		if (m_nLife >= LIFE_ENEMY)
-		{
-			//削除処理
-			Uninit();
+			//タイプが敵の時
+			if (m_type == BULLETTYPE_ENEMY || m_type == BULLETTYPE_TUTORIAL)
+			{
+				if (m_nCntHit >= 10)
+				{
+					//プレイヤーとの当たり判定
+					if (CPlayer3D::CollisionBullet(this) == true)
+					{
+						//自分の終了処理
+						Uninit();
 
-			m_nLife = 0;  //0に戻す
-		}
-	}
+						m_nCntHit = 0;  //カウントを0にリセットする
+					}
+				}
 
-	//タイプがチュートリアル用の時
-	if (m_type == BULLETTYPE_TUTORIAL)
-	{
-		//弾が消えるまでのカウント
-		if (m_nLife >= LIFE_PLAYER)
-		{
-			//削除処理
-			Uninit();
+				//弾が消えるまでのカウント
+				if (m_nLife >= LIFE_ENEMY)
+				{
+					//削除処理
+					Uninit();
 
-			m_nLife = 0;  //0に戻す
-		}
-
-		//敵との当たり判定
-		if (CEnemy3D::CollisionBullet(this) == true)
-		{
-			//自分の終了処理
-			Uninit();
+					m_nLife = 0;  //0に戻す
+				}
+			}
 		}
 	}
 }

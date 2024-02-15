@@ -233,6 +233,46 @@ void CPlayer3D::Update()
 			//SEの再生
 			pSound->PlaySound(SOUND_LABEL_SE_JAMP);
 		}
+
+		//壁走り中のジャンプ(右から)
+		else if (pInputKeyboard->GetTrigger(DIK_SPACE) == true && m_jump == PLAYERJUMP_WALLRUN_R   //SPACEが押された時
+			|| pInputPad->GetTrigger(CInputPad::BUTTON_A, 0) && m_jump == PLAYERJUMP_WALLRUN_R)  //Aボタンが押された時
+		{
+			//左に跳ぶ
+			move.x = sinf(rot.y + D3DX_PI * 0.75f) * WALLJAMPSPEED;
+			move.y = 100.0f;
+			move.z = cosf(rot.y + D3DX_PI * 0.75f) *WALLJAMPSPEED;
+
+			pos.y -= move.y;  //慣性
+			move.y -= 0.3f;  //重力を加える
+
+			m_nCntDown = 0;
+
+			m_jump = PLAYERJUMP_SKY;  //ジャンプしている状態にする
+
+			//SEの再生
+			pSound->PlaySound(SOUND_LABEL_SE_JAMP);
+		}
+
+		//壁走り中のジャンプ(左から)
+		else if (pInputKeyboard->GetTrigger(DIK_SPACE) == true && m_jump == PLAYERJUMP_WALLRUN_L   //SPACEが押された時
+			|| pInputPad->GetTrigger(CInputPad::BUTTON_A, 0) && m_jump == PLAYERJUMP_WALLRUN_L)  //Aボタンが押された時
+		{
+			//右に跳ぶ
+			move.x = sinf(rot.y + D3DX_PI * -0.75f) * WALLJAMPSPEED;
+			move.y = 100.0f;  //上に移動する
+			move.z = cosf(rot.y + D3DX_PI * -0.75f) *WALLJAMPSPEED;
+
+			pos.y -= move.y;  //慣性
+			move.y -= 0.3f;  //重力を加える
+
+			m_nCntDown = 0;
+
+			m_jump = PLAYERJUMP_SKY;  //ジャンプしている状態にする
+
+			//SEの再生
+			pSound->PlaySound(SOUND_LABEL_SE_JAMP);
+		}
 	}
 
 	///////////////////////////////////////////
@@ -253,8 +293,17 @@ void CPlayer3D::Update()
 		//ステップ状態がfalseの時
 		if (m_Step == false)
 		{
-			//重力を加える
-			move.y -= 4.0f;
+			if (m_jump == PLAYERJUMP_GROUND || m_jump == PLAYERJUMP_SKY)
+			{
+				//重力を加える
+				move.y -= 4.0f;
+			}
+
+			else if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
+			{
+				//重力を加える
+				move.y -= 1.0f;
+			}
 		}
 	}
 

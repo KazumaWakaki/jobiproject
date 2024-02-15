@@ -70,13 +70,15 @@ HRESULT CGame::Init(void)
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 30.0f), CBlock3D::BLOCK_NEONFLOOR);  //チュートリアル用土台
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 60.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 4.0f, 20.0f), CBlock3D::BLOCK_NEONFLOOR);
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, -2500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 20.0f), CBlock3D::BLOCK_NEONFLOOR);
-	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, -0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 40.0f), CBlock3D::BLOCK_NEONFLOOR);
+	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 40.0f), CBlock3D::BLOCK_NEONFLOOR);
 
 	CBlock3D::Create(D3DXVECTOR3(300.0f, 0.0f, 2300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(30.0f, 2.0f, 20.0f),  CBlock3D::BLOCK_NEONFLOOR);  //1個目の土台
 	CBlock3D::Create(D3DXVECTOR3(600.0f, 0.0f, 1720.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 0.1f), CBlock3D::BLOCK_NEON);  //壁
 	CBlock3D::Create(D3DXVECTOR3(00.0f, 0.0f, 2820.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 0.1f), CBlock3D::BLOCK_NEON);
 	CBlock3D::Create(D3DXVECTOR3(500.0f, 20.0f, 4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.0f, 2.0f, 30.0f), CBlock3D::BLOCK_NEONFLOOR);
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, 6500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(40.0f, 2.0f, 40.0f), CBlock3D::BLOCK_NEONFLOOR);  //ボスの土台
+
+	CBlock3D::Create(D3DXVECTOR3(300.0f, 150.0f, -2000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.5f, 2.0f, 3.0f), CBlock3D::BLOCK_NEONWALL);  //壁走り
 
 	//---------------------------------------------------------------
 	//モデルの生成
@@ -99,7 +101,7 @@ HRESULT CGame::Init(void)
 	//---------------------------------------------------------------
 	//プレイヤー3Dの生成
 	//---------------------------------------------------------------
-	CPlayer3D::Create(D3DXVECTOR3(0.0f, 100.0f, 5500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CPlayer3D::Create(D3DXVECTOR3(0.0f, 100.0f, -5500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//BGMの再生
 	pSound->PlaySound(SOUND_LABEL_BGM_GAME);

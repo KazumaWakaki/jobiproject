@@ -676,6 +676,7 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 						m_apObject[nCnt]->m_BossDownState = true;
 						m_apObject[nCnt]->m_nCntDownSpeed = 0;
 						pModelSet->SetBossCoreState(pModelSet->BOSSCORESTATE_NONE);  //コアがない状態にする
+						m_apObject[nCnt]->ResetMat();  //色を戻す
 					}
 				}
 
@@ -683,6 +684,7 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 				if (m_apObject[nCnt]->m_BossDownState == true)
 				{
 					rot.x -= 0.004f;  //ボスがダウンする速度
+					rot.y = 0.0f;
 
 					if (rot.x < -1.2f)
 					{
@@ -791,41 +793,39 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 //-------------------------------------------------------
 bool CEnemy3D::CollisionBullet(CBullet3D *pBullet)
 {
-	CObject::TYPE type;  //種類
+	//種類を取得
+	CObject::TYPE type = pBullet->GetType();
 
 	for (int nCnt = 0; nCnt < MAX_ENEMY; nCnt++)
 	{
-		if (m_apObject[nCnt] != NULL)
+		if (m_apObject[nCnt] != nullptr)
 		{
-			if (pBullet != NULL)
+			//種類が弾の場合
+			if (type == CObject::TYPE_BULLET)
 			{
+				D3DXVECTOR3 pos = m_apObject[nCnt]->GetPosition();  //位置の取得
+				D3DXVECTOR3 scale = m_apObject[nCnt]->GetScale();  //スケールの取得
+				D3DXVECTOR3 posBullet = pBullet->GetPosition();  //弾の位置取得
+				D3DXVECTOR3 scaleBullet = pBullet->GetScale();  //弾のスケール取得
 				int typetex = m_apObject[nCnt]->GetTypeTex();
-				type = pBullet->GetType();  //種類を取得
 
-				//種類が弾の場合
-				if (type == CObject::TYPE_BULLET)
+				//通常の時
+				if (typetex == TYPE_USUALLY)
 				{
-					D3DXVECTOR3 pos = m_apObject[nCnt]->GetPosition();  //位置の取得
-					D3DXVECTOR3 scale = m_apObject[nCnt]->GetScale();  //サイズの取得
-					D3DXVECTOR3 posBullet = pBullet->GetPosition();  //弾の位置取得
-					D3DXVECTOR3 scaleBullet = pBullet->GetScale();  //弾のサイズ取得
-
-					//通常の時
-					if (typetex == TYPE_USUALLY)
+					//敵と重なった時
+					if (pos.x + scale.x * USUALLY_COR_X > posBullet.x - scaleBullet.x * BULLET_COL_XZ
+						&&  pos.x - scale.x * USUALLY_COR_X < posBullet.x + scaleBullet.x * BULLET_COL_XZ
+						&&  pos.y + scale.y * USUALLY_COR_Y > posBullet.y - scaleBullet.y * BULLET_COL_Y
+						&&  pos.y - scale.y < posBullet.y + scaleBullet.y
+						&&  pos.z + scale.z * USUALLY_COR_Z > posBullet.z - scaleBullet.z * BULLET_COL_XZ
+						&&  pos.z - scale.z * USUALLY_COR_Z < posBullet.z + scaleBullet.z * BULLET_COL_XZ)
 					{
-						//敵と重なった時
-						if (pos.x + scale.x * USUALLY_COR_X > posBullet.x - scaleBullet.x * BULLET_COL_XZ
-							&&  pos.x - scale.x * USUALLY_COR_X < posBullet.x + scaleBullet.x * BULLET_COL_XZ
-							&&  pos.y + scale.y * USUALLY_COR_Y > posBullet.y - scaleBullet.y * BULLET_COL_Y
-							&&  pos.y - scale.y < posBullet.y + scaleBullet.y
-							&&  pos.z + scale.z * USUALLY_COR_Z > posBullet.z - scaleBullet.z * BULLET_COL_XZ
-							&&  pos.z - scale.z * USUALLY_COR_Z < posBullet.z + scaleBullet.z * BULLET_COL_XZ)
-						{
-							//敵のヒット処理
-							CEnemy3D::HitEnemy(100, nCnt);
+						//敵のヒット処理
+						CEnemy3D::HitEnemy(100, nCnt);
 
-							return TRUE;
-						}
+						pBullet->Uninit();
+
+						return TRUE;
 					}
 				}
 			}

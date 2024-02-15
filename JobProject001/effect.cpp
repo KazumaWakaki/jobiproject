@@ -39,7 +39,7 @@ HRESULT CEffect::Init()
 
 	//モデルを宣言
 	m_nIdxTexture[EFFECTTYPE_BEAM] = pTexture->Regist("data\\texture\\Beam001.jpg");  //ビーム
-	m_nIdxTexture[EFFECTTYPE_BLINKING] = pTexture->Regist("data\\texture\\blinking.png");  //点滅
+	m_nIdxTexture[EFFECTTYPE_BLINKING] = pTexture->Regist("data\\texture\\Beam001.png");  //点滅
 
 	//サイズ初期化
 	SetSize(D3DXVECTOR3(0.0f, 0.0f, 0.0f));

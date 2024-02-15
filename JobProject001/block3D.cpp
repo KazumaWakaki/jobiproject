@@ -53,6 +53,7 @@ HRESULT CBlock3D::Init()
 
 	m_nIdxModel[BLOCK_NEONFLOOR] = pModel->Regist("data\\MODEL\\neonfloor001.x");  //床ブロック
 	m_nIdxModel[BLOCK_NEON] = pModel->Regist("data\\MODEL\\neonwall001.x");  //ネオンブロック
+	m_nIdxModel[BLOCK_NEONWALL] = pModel->Regist("data\\MODEL\\runwall001.x");  //ネオンブロック
 
 	//モデルの初期化処理
 	CObjectX::Init();
@@ -98,12 +99,12 @@ void CBlock3D::Draw()
 //-------------------------------------------------------
 CBlock3D *CBlock3D::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 scale, int SetTypeTex)
 {
-	CBlock3D *pBlock3D = NULL;
+	CBlock3D *pBlock3D = nullptr;
 
 	//ブロックの生成
 	pBlock3D = new CBlock3D;
 
-	if (pBlock3D != NULL)
+	if (pBlock3D != nullptr)
 	{
 		//初期化処理
 		pBlock3D->Init();
@@ -172,14 +173,15 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();  //プレイヤーの位置
 				D3DXVECTOR3 posOldPlayer = pPlayer->GetPositionOld();  //プレイヤーの過去の位置
 				D3DXVECTOR3 movePlayer = pPlayer->GetMove();  //プレイヤーの移動量
+				D3DXVECTOR3 rotPlayer = pPlayer->GetRotation();  //プレイヤーの向き
 				D3DXVECTOR3 scalePlayer = pPlayer->GetScale();  //プレイヤーの拡大率
 
-				//木ブロック
+				//ネオン床
 				if (typetex == BLOCK_NEONFLOOR)
 				{
 					//プレイヤーと重なった時
-					if (m_pos.z - m_Scale.z * NEONFLOOR_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z
-						&&  m_pos.z + m_Scale.z * NEONFLOOR_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z)
+					if (m_pos.z - m_Scale.z * NEONFLOOR_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f
+						&&  m_pos.z + m_Scale.z * NEONFLOOR_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f)
 					{
 						///////////////////////////////////
 						//横の判定
@@ -242,10 +244,10 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 								movePlayer.z = 0.0f;  //プレイヤーの移動量を0にする
 							}
 
-							if (m_pos.z + m_Scale.z * NEONFLOOR_COL < posOldPlayer.z - scalePlayer.z * PLAYER_COL_Z
-								&&  m_pos.z + m_Scale.z * NEONFLOOR_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z)
+							if (m_pos.z + m_Scale.z * NEONFLOOR_COL < posOldPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f
+								&&  m_pos.z + m_Scale.z * NEONFLOOR_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f)
 							{//奥
-								posPlayer.z = m_pos.z + m_Scale.z * NEONFLOOR_COL + 20.0f;  //ブロックの奥から抜けない
+								posPlayer.z = m_pos.z + m_Scale.z * NEONFLOOR_COL + 170.0f;  //ブロックの奥から抜けない
 								movePlayer.z = 0.0f;  //プレイヤーの移動量を0にする
 							}
 						}
@@ -261,8 +263,8 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 						///////////////////////////////////
 						//横の判定
 						///////////////////////////////////
-						if (m_pos.z - m_Scale.z * NEON_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 50.0f
-							&&  m_pos.z + m_Scale.z * NEON_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z + 50.0f)
+						if (m_pos.z - m_Scale.z * NEON_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f
+							&&  m_pos.z + m_Scale.z * NEON_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f)
 						{
 							if (m_pos.x - m_Scale.x * NEON_COL > posOldPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f
 								&&  m_pos.x - m_Scale.x * NEON_COL < posPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f)
@@ -284,6 +286,82 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 						///////////////////////////////////
 						if (m_pos.x - m_Scale.x * NEON_COL < posPlayer.x + scalePlayer.x * PLAYER_COL_X
 							&&  m_pos.x + m_Scale.x * NEON_COL > posPlayer.x - scalePlayer.x * PLAYER_COL_X)
+						{
+							if (m_pos.z - m_Scale.z * NEON_COL > posOldPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f
+								&&  m_pos.z - m_Scale.z * NEON_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f)
+							{//手前
+								posPlayer.z = m_pos.z - m_Scale.z * NEON_COL - 170.0f;  //ブロックの手前から抜けない
+								movePlayer.z = 0.0f;  //プレイヤーの移動量を0にする
+							}
+
+							if (m_pos.z + m_Scale.z * NEON_COL < posOldPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f
+								&&  m_pos.z + m_Scale.z * NEON_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f)
+							{//奥
+								posPlayer.z = m_pos.z + m_Scale.z * NEON_COL + 170.0f;  //ブロックの奥から抜けない
+								movePlayer.z = 0.0f;  //プレイヤーの移動量を0にする
+							}
+						}
+					}
+				}
+
+				//ネオン壁
+				if (typetex == BLOCK_NEONWALL)
+				{
+					if (m_pos.y - m_Scale.y < posPlayer.y + scalePlayer.y * PLAYER_COL_Y
+						&&  m_pos.y + m_Scale.y * NEON_COL > posPlayer.y - scalePlayer.y)
+					{
+						///////////////////////////////////
+						//横の判定
+						///////////////////////////////////
+						if (m_pos.z - m_Scale.z * NEON_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f
+							&&  m_pos.z + m_Scale.z * NEON_COL > posPlayer.z - scalePlayer.z * PLAYER_COL_Z - 150.0f)
+						{
+							if (m_pos.x - m_Scale.x * NEON_COL > posOldPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f
+								&&  m_pos.x - m_Scale.x * NEON_COL < posPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f)
+							{//左
+								posPlayer.x = m_pos.x - m_Scale.x * NEON_COL - 179.0f;  //ブロックの左から抜けない
+
+								//前に進む
+								movePlayer.x += sinf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
+								movePlayer.z += cosf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
+
+								if (rotPlayer.y > 1.57f || rotPlayer.y < -1.57f)
+								{
+									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_R);  //プレイヤーを右からの壁走り状態にする
+								}
+
+								else if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
+								{
+									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_L);  //プレイヤーを左からの壁走り状態にする
+								}
+							}
+
+							if (m_pos.x + m_Scale.x * NEON_COL < posOldPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f
+								&&  m_pos.x + m_Scale.x * NEON_COL > posPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f)
+							{//右
+								posPlayer.x = m_pos.x + m_Scale.x * NEON_COL + 179.0f;  //ブロックの右から抜けない
+
+								//前に進む
+								movePlayer.x += sinf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
+								movePlayer.z += cosf(rotPlayer.y + D3DX_PI) * WALLRUNSPEED;
+
+								if (rotPlayer.y > 1.57f || rotPlayer.y < -1.57f)
+								{
+									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_R);  //プレイヤーを右からの壁走り状態にする
+								}
+
+								else if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
+								{
+									pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_L);  //プレイヤーを左からの壁走り状態にする
+								}
+							}
+						}
+
+						///////////////////////////////////
+						//奥行きの判定
+						///////////////////////////////////
+						if (m_pos.x - m_Scale.x * NEON_COL < posPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f
+							&&  m_pos.x + m_Scale.x * NEON_COL > posPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f)
 						{
 							if (m_pos.z - m_Scale.z * NEON_COL > posOldPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f
 								&&  m_pos.z - m_Scale.z * NEON_COL < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 150.0f)

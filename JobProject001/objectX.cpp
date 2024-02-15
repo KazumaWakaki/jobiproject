@@ -35,18 +35,10 @@ CObjectX::~CObjectX()
 //=======================================================
 HRESULT CObjectX::Init(void)
 {
-	//CModel::Model *pModel = CManager::GetModel()->GetAddress(m_nIdxModel);
-
-	//D3DXMATERIAL *pMat;   //マテリアルへのポインタ
-
-	////マテリアルデータへのポインタを取得
-	//pMat = (D3DXMATERIAL*)pModel->m_pBuffMat->GetBufferPointer();
-
-	//for (int nCntMat = 0; nCntMat < (int)m_dwNumMat; nCntMat++)
-	//{
-	//}
-
-	LPDIRECT3DTEXTURE9 m_apTexture[8] = {};  //テクスチャへのポインタ
+	for (int nCnt = 0; nCnt < 8; nCnt++)
+	{
+		m_apTexture[nCnt] = nullptr;  //テクスチャへのポインタ
+	}
 
 	return (S_OK);
 }
@@ -87,7 +79,6 @@ void CObjectX::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();  //デバイスの取得
 	D3DXMATRIX mtxScale, mtxRot, mtxTrans;  //計算用マトリックス
 	D3DMATERIAL9 matDef;  //現在のマテリアル保存用
-	D3DXMATERIAL *pMat;  //マテリアルデータへのポインタ
 
 	CModel::Model *pModel = CManager::GetInstance()->GetModel()->GetAddress(m_nIdxModel);
 

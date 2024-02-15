@@ -20,6 +20,8 @@ class CGauge;
 #define PLAYERSPEED (2.5f)  //移動時のスピード
 #define PLAYERSPEEDUP (0.2f)  //移動量更新時のスピード
 #define STEPSPEED (100.0f)  //ステップ時のスピード
+#define WALLRUNSPEED (8.0f)  //壁走りのスピード
+#define WALLJAMPSPEED (300.0f)  //壁走りジャンプのスピード
 #define PLAYER_COL_X (95.0f)  //プレイヤーの拡大率分補正X
 #define PLAYER_COL_Y (400.0f)  //プレイヤーの拡大率分補正Y
 #define PLAYER_COL_Z (66.0f)  //プレイヤーの拡大率分補正Z
@@ -44,6 +46,8 @@ public:
 		PLAYERJUMP_GROUND = 0,  //地面
 		PLAYERJUMP_SKY,  //ジャンプ状態
 		PLAYERJUMP_GETOFF,  //降下状態
+		PLAYERJUMP_WALLRUN_R,  //壁走り状態右から
+		PLAYERJUMP_WALLRUN_L,  //壁走り状態左から
 		PLAYERJUMP_MAX
 	}PLAYERJAMP;
 

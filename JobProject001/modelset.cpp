@@ -336,15 +336,15 @@ bool CModelSet::CollisionBullet(CBullet3D *pBullet)
 
 	for (int nCnt = 0; nCnt < MAX_MODEL; nCnt++)
 	{
-		if (m_apObject[nCnt] != NULL)
+		if (m_apObject[nCnt] != nullptr)
 		{
 			//種類が弾の場合
 			if (type == CObject::TYPE_BULLET)
 			{
 				D3DXVECTOR3 pos = m_apObject[nCnt]->GetPosition();  //位置の取得
-				D3DXVECTOR3 scale = m_apObject[nCnt]->GetScale();  //サイズの取得
+				D3DXVECTOR3 scale = m_apObject[nCnt]->GetScale();  //スケールの取得
 				D3DXVECTOR3 posBullet = pBullet->GetPosition();  //弾の位置取得
-				D3DXVECTOR3 scaleBullet = pBullet->GetScale();  //弾のサイズ取得
+				D3DXVECTOR3 scaleBullet = pBullet->GetScale();  //弾のスケール取得
 				int typetex = m_apObject[nCnt]->GetTypeTex();  //テクスチャタイプ取得
 
 				//ボスコアの時
