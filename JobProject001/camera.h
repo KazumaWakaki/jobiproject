@@ -39,6 +39,7 @@ public:
 	//関数
 	static void MoveCamera(CPlayer3D *pPlayer);  //追従処理
 	static void PlayerTriggerCamera(CPlayer3D *pPlayer);  //プレイヤー死亡時カメラの向きの処理
+	static void PlayerWallRunCamera(CPlayer3D *pPlayer);  //プレイヤーが壁走りしているときの処理
 
 private:
 	//変数

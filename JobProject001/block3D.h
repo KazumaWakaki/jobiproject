@@ -45,6 +45,7 @@ public:
 	static bool CollisionEnemy(CEnemy3D *pEnemy);   //敵との当たり判定
 
 private:
+	int m_nCntPlaJamp;  //プレイヤーのジャンプ状態カウント
 	int m_nID;  //番号
 	int m_nIdxTexture;   //テクスチャ保存
 	int m_nIdxModel[BLOCK_MAX];  //モデル割り当て

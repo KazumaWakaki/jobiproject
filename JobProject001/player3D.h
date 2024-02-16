@@ -127,6 +127,7 @@ private:
 	bool m_Step;  //ステップ状態切り替え
 	bool m_StepPossible;  //ステップ可能状態切り替え
 	bool m_Restart;  //リスタート状態切り替え
+	static bool m_BossState;  //ボスが生成管理
 	PLAYERJAMP m_jump;  //プレイヤーのジャンプ
 	SWORDATTACK m_SwordAttack;  //日本刀の攻撃3段階
 	STATERES m_StateRes;  //リスポーン状態

@@ -25,7 +25,7 @@
 
 //静的メンバ変数
 CPlayer3D *CPlayer3D::m_apObject = NULL;
-
+bool CPlayer3D::m_BossState = false;
 //-------------------------------------------------------
 //コンストラクタ
 //-------------------------------------------------------
@@ -76,6 +76,7 @@ HRESULT CPlayer3D::Init()
 	m_StepGaugeCnt = 0;
 	m_Step = false;
 	m_StepPossible = false;
+	m_BossState = false;
 	m_jump = PLAYERJUMP_GROUND;
 	m_SwordAttack = SWORDATTACK_0;
 	m_StateRes = STATERES_NONE;
@@ -224,6 +225,7 @@ void CPlayer3D::Update()
 		if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
 		{
 			//前に進む
+			move.x += sinf(rot.y + D3DX_PI) * WALLRUNSPEED;
 			move.z += cosf(rot.y + D3DX_PI) * WALLRUNSPEED;
 		}
 
@@ -257,7 +259,7 @@ void CPlayer3D::Update()
 
 			m_nCntDown = 0;
 
-			m_jump = PLAYERJUMP_GETOFF;  //ジャンプしている状態にする
+			m_jump = PLAYERJUMP_SKY;  //ジャンプしている状態にする
 
 			//SEの再生
 			pSound->PlaySound(SOUND_LABEL_SE_JAMP);
@@ -307,7 +309,8 @@ void CPlayer3D::Update()
 				//重力を加える
 				move.y -= 4.0f;
 
-				//m_jump = PLAYERJUMP_GETOFF;
+				//降下状態にする
+				m_jump = PLAYERJUMP_GETOFF;
 			}
 
 			if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
@@ -376,6 +379,7 @@ void CPlayer3D::Update()
 	CModelSet::ModelCollision(this);  //モデルとの当たり判定
 	CCamera::MoveCamera(this);  //カメラ追従
 	CCamera::PlayerTriggerCamera(this);  //プレイヤー死亡時カメラの向きの処理
+	CCamera::PlayerWallRunCamera(this);  //プレイヤーが壁走りしているときの処理
 
 	//ステップ状態以外の時
 	if (m_StepState != STEPSTATE_STEP)
@@ -412,6 +416,16 @@ void CPlayer3D::Update()
 	{
 		//プレイヤーのヒット処理
 		CPlayer3D::HitPlayer(1000);
+	}
+
+	if (pos.z > 28000)
+	{
+		if (m_BossState == false)
+		{
+			CEnemy3D::Create(D3DXVECTOR3(-500.0f, 80.0f, 32500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.5f, 0.5f, 0.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEnemy3D::TYPE_BOSS, 2000);
+
+			m_BossState = true;
+		}
 	}
 
 	//-------------------------------------------------------

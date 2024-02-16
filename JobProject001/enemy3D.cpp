@@ -18,7 +18,7 @@
 #define BESTPOS (700.0f)  //敵の動いてくる最近距離
 #define BESTPOSBOSS (1300.0f)  //ボスの動いてくる最近距離
 #define USUALLY_RANGE (1000.0f)  //通常敵の検知範囲
-#define BOSS_RANGE (1500.0f)  //ボスの検知範囲
+#define BOSS_RANGE (4000.0f)  //ボスの検知範囲
 
 //静的メンバ変数
 CEnemy3D *CEnemy3D::m_apObject[MAX_ENEMY] = {};
@@ -364,14 +364,24 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 			D3DXVECTOR3 pos = m_apObject[nCnt]->GetPosition();  //位置の取得
 			D3DXVECTOR3 rot = m_apObject[nCnt]->GetRotation();  //向きの取得
 			D3DXVECTOR3 scale = m_apObject[nCnt]->GetScale();  //スケールの取得
-			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();  //プレイヤーの位置の取得
-			D3DXVECTOR3 posOldPlayer = pPlayer->GetPositionOld();  //プレイヤーの過去の位置の取得
-			D3DXVECTOR3 scalePlayer = pPlayer->GetScale();  //プレイヤーのスケール取得
 			int typetex = m_apObject[nCnt]->GetTypeTex();  //種類取得
 			CObject::TYPE type = pPlayer->GetType();  //オブジェクトの種類を取得
 
 			if (type == CObject::TYPE_PLAYER)
 			{
+				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();  //プレイヤーの位置の取得
+				D3DXVECTOR3 posOldPlayer = pPlayer->GetPositionOld();  //プレイヤーの過去の位置の取得
+				D3DXVECTOR3 scalePlayer = pPlayer->GetScale();  //プレイヤーのスケール取得
+				int PlaLife = pPlayer->GetLife();  //プレイヤーのライフ取得
+
+				if (PlaLife <= 0)
+				{
+					if (typetex == TYPE_BOSS)
+					{
+						m_apObject[nCnt]->Uninit();
+					}
+				}
+
 				//プレイヤーのリスタート状態が無効の時
 				if (pPlayer->GetRestart() == false)
 				{
@@ -438,7 +448,7 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 
 						rot.y = fAngleY + 1.57f;
 
-						//プレイヤーが範囲内で入った時
+						//プレイヤーがボスの見える範囲内に入った時
 						if (pos.x - scale.x * USUALLY_COR_X - BOSS_RANGE < posPlayer.x + scalePlayer.x * PLAYER_COL_X
 							&&  pos.x + scale.x * USUALLY_COR_X + BOSS_RANGE > posPlayer.x - scalePlayer.x * PLAYER_COL_X
 							&&  pos.z - scale.z * USUALLY_COR_Z - BOSS_RANGE < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 130.0f
@@ -454,35 +464,42 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 								m_apObject[nCnt]->m_LifeState = true;
 							}
 
-							m_apObject[nCnt]->m_BossBattel = BOSS_BATTEL_1;  //ボスの戦闘態勢状態を一段階にする
-
-							//ボスがダウン状態じゃないとき
-							if (m_apObject[nCnt]->m_BossDownState == false)
+							//プレイヤーがボスの攻撃範囲内に入った時
+							if (pos.x - scale.x * USUALLY_COR_X - BOSS_RANGE < posPlayer.x + scalePlayer.x * PLAYER_COL_X
+								&&  pos.x + scale.x * USUALLY_COR_X + BOSS_RANGE > posPlayer.x - scalePlayer.x * PLAYER_COL_X
+								&&  pos.z - scale.z * USUALLY_COR_Z - BOSS_RANGE < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 130.0f
+								&&  pos.z + scale.z * USUALLY_COR_Z + BOSS_RANGE > posPlayer.z - scalePlayer.z * PLAYER_COL_Z + 130.0f)
 							{
-								if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
+								m_apObject[nCnt]->m_BossBattel = BOSS_BATTEL_1;  //ボスの戦闘態勢状態を一段階にする
+
+								//ボスがダウン状態じゃないとき
+								if (m_apObject[nCnt]->m_BossDownState == false)
 								{
-									D3DXMATERIAL redMat;
-									ZeroMemory(&redMat, sizeof(redMat));
-									redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
-									redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+									if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
+									{
+										D3DXMATERIAL redMat;
+										ZeroMemory(&redMat, sizeof(redMat));
+										redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+										redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 
-									m_apObject[nCnt]->SetMat(1, redMat);
+										m_apObject[nCnt]->SetMat(1, redMat);
+									}
+
+									if (m_apObject[nCnt]->m_nCntEnemyBullet == 100)
+									{
+										m_apObject[nCnt]->ResetMat();
+
+										//弾発射
+										CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
+
+										//ビーム生成
+										CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
+
+										m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
+									}
+
+									m_apObject[nCnt]->m_nCntEnemyBullet++;  //敵の弾カウンター
 								}
-
-								if (m_apObject[nCnt]->m_nCntEnemyBullet == 100)
-								{
-									m_apObject[nCnt]->ResetMat();
-
-									//弾発射
-									CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
-
-									//ビーム生成
-									CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
-
-									m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
-								}
-
-								m_apObject[nCnt]->m_nCntEnemyBullet++;  //敵の弾カウンター
 							}
 						}
 					}

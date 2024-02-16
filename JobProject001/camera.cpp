@@ -270,7 +270,7 @@ void CCamera::SetCamera(void)
 		D3DXToRadian(45.0f),
 		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,
 		1.0f,
-		10000.0f);
+		20000.0f);
 
 	//プロジェクションマトリックスを設定(平行投影)
 	//D3DXMatrixOrthoLH(&mtxProjection,
@@ -310,7 +310,7 @@ void CCamera::MoveCamera(CPlayer3D *pPlayer)
 		//種類がプレイヤーの場合
 		if (type == CObject::TYPE_PLAYER)
 		{
-			D3DXVECTOR3 m_rot = m_apObject->GetRot();  //向き
+			D3DXVECTOR3 rot = m_apObject->GetRot();  //向き
 			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();  //プレイヤーの位置の取得
 			D3DXVECTOR3 movePlayer = pPlayer->GetMove();  //プレイヤーの移動量の取得
 			D3DXVECTOR3 rotPlayer = pPlayer->GetRotation();  //プレイヤーの向きの取得
@@ -374,8 +374,8 @@ void CCamera::MoveCamera(CPlayer3D *pPlayer)
 			//m_apObject->m_posV += VDeff * 0.01f;
 
 			//プレイヤーの向きをカメラと同じにする
-			rotPlayer.y = m_rot.y + D3DX_PI;
-			rotPlayer.x = m_rot.x - D3DX_PI;
+			rotPlayer.y = rot.y + D3DX_PI;
+			rotPlayer.x = rot.x - D3DX_PI;
 
 			pPlayer->SetRotation(rotPlayer);
 		}
@@ -397,17 +397,53 @@ void CCamera::PlayerTriggerCamera(CPlayer3D *pPlayer)
 		//種類がプレイヤーの場合
 		if (type == CObject::TYPE_PLAYER)
 		{
-			D3DXVECTOR3 m_rot = m_apObject->GetRot();  //向き
+			D3DXVECTOR3 rot = m_apObject->GetRot();  //向き
 			int PlaRes = pPlayer->GetStateRes();  //プレイヤーのリスポーン状態取得
 
 			//プレイヤーのリスポーン状態が待機のとき
 			if (pPlayer->GetStateRes() == pPlayer->STATERES_RESPAWN)
 			{
-				m_rot.y = 0.0f;  //カメラの向きを初期化する
+				rot.y = 0.0f;  //カメラの向きを初期化する
 			}
 
 			//カメラの向きの設定
-			m_apObject->SetRotation(m_rot);
+			m_apObject->SetRotation(rot);
+		}
+	}
+}
+//=======================================================
+//プレイヤーが壁走りしているときの処理
+//=======================================================
+void CCamera::PlayerWallRunCamera(CPlayer3D *pPlayer)
+{
+	//pPlayerがNULLじゃなかった時
+	if (pPlayer != NULL)
+	{
+		CObject::TYPE type;  //種類
+
+		//種類を取得
+		type = pPlayer->GetType();
+
+		//種類がプレイヤーの場合
+		if (type == CObject::TYPE_PLAYER)
+		{
+			D3DXVECTOR3 rot = m_apObject->GetRot();  //向き
+			int PlaJamp = pPlayer->GetJamp();  //プレイヤーのジャンプ状態取得
+
+			////プレイヤーの壁走り状態が右からとき
+			//if (PlaJamp == pPlayer->PLAYERJUMP_WALLRUN_R)
+			//{
+			//	rot.z = 1.2f;  //カメラの向きを初期化する
+			//}
+
+			////プレイヤーの壁走り状態が左からとき
+			//if (PlaJamp == pPlayer->PLAYERJUMP_WALLRUN_L)
+			//{
+			//	rot.x = -1.2f;  //カメラの向きを初期化する
+			//}
+
+			//カメラの向きの設定
+			m_apObject->SetRotation(rot);
 		}
 	}
 }

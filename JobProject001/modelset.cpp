@@ -208,7 +208,7 @@ void CModelSet::Draw()
 {
 	int typetex = GetTypeTex();  //タイプ判定用
 
-	if (typetex != TYPE_CHECKPOINT)
+	//if (typetex != TYPE_CHECKPOINT)
 	{
 		//モデルXの描画処理
 		CObjectX::Draw();
@@ -295,7 +295,7 @@ bool CModelSet::ModelCollision(CPlayer3D *pPlayer)
 					//プレイヤーと重なった時
 					if (pos.x - m_scale.x * CHECKPOINT_COR < posPlayer.x + scalePlayer.x * PLAYER_COL_X
 						&&  pos.x + m_scale.x * CHECKPOINT_COR > posPlayer.x - scalePlayer.x * PLAYER_COL_X
-						&&  pos.y - m_scale.y * CHECKPOINT_COR < posPlayer.y - scalePlayer.y * PLAYER_COL_Y
+						&&  pos.y - m_scale.y * CHECKPOINT_COR < posPlayer.y + scalePlayer.y * PLAYER_COL_Y
 						&&  pos.z - m_scale.z * CHECKPOINT_COR < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 120.0f
 						&&  pos.z + m_scale.z * CHECKPOINT_COR > posPlayer.z - scalePlayer.z * PLAYER_COL_Z + 120.0f)
 					{
