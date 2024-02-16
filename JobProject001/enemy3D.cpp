@@ -810,6 +810,9 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 //-------------------------------------------------------
 bool CEnemy3D::CollisionBullet(CBullet3D *pBullet)
 {
+	if (pBullet == nullptr) {
+		return FALSE;
+	}
 	//Ží—Þ‚ðŽæ“¾
 	CObject::TYPE type = pBullet->GetType();
 

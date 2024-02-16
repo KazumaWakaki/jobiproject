@@ -745,6 +745,9 @@ bool CPlayer3D::CollisionEnemy(CEnemy3D *pEnemy)
 //-------------------------------------------------------
 bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 {
+	if (pBullet == nullptr) {
+		return FALSE;
+	}
 	//キーボードの取得
 	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
 

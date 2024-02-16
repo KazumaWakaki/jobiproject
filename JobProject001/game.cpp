@@ -129,7 +129,7 @@ HRESULT CGame::Init(void)
 
 	//---------------------------------------------------------------
 	//ƒvƒŒƒCƒ„[3D‚Ì¶¬
-	CPlayer3D::Create(D3DXVECTOR3(0.0f, 1000.0f, 24000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CPlayer3D::Create(D3DXVECTOR3(0.0f, 1000.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//BGM‚ÌÄ¶
 	pSound->PlaySound(SOUND_LABEL_BGM_GAME);
