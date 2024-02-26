@@ -173,7 +173,7 @@ void CBullet3D::Update(void)
 void CBullet3D::Draw(void)
 {
 	//オブジェクトの描画処理
-	//CObjectX::Draw();
+	CObjectX::Draw();
 }
 //-------------------------------------------------------
 //生成処理

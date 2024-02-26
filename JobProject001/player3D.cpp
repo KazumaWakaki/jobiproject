@@ -307,7 +307,7 @@ void CPlayer3D::Update()
 			if (m_jump == PLAYERJUMP_GROUND || m_jump == PLAYERJUMP_SKY || m_jump == PLAYERJUMP_GETOFF)
 			{
 				//重力を加える
-				move.y -= 4.0f;
+				move.y -= 3.0f;
 
 				//降下状態にする
 				m_jump = PLAYERJUMP_GETOFF;
@@ -810,8 +810,8 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 				//弾発射
 				CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_PLAYER);
 
-				//ビーム生成
-				CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_PLA);
+				////ビーム生成
+				//CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_PLA);
 			}
 
 			//プレイヤーに当たった時

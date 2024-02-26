@@ -323,10 +323,10 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 							{
 								m_apObject[nCnt]->m_nCntPlaJamp = 0;
 
-								if (m_pos.x - m_Scale.x * NEON_COL > posOldPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f
-									&&  m_pos.x - m_Scale.x * NEON_COL < posPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f)
+								if (m_pos.x - m_Scale.x * NEON_COL + 20.0f > posOldPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f
+									&&  m_pos.x - m_Scale.x * NEON_COL + 20.0f < posPlayer.x + scalePlayer.x * PLAYER_COL_X + 150.0f)
 								{//左
-									posPlayer.x = m_pos.x - m_Scale.x * NEON_COL - 179.0f;  //ブロックの左から抜けない
+									posPlayer.x = m_pos.x - m_Scale.x * NEON_COL - 159.0f;  //ブロックの左から抜けない
 
 									if (rotPlayer.y > 1.57f || rotPlayer.y < -1.57f)
 									{
@@ -344,10 +344,10 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 							{
 								m_apObject[nCnt]->m_nCntPlaJamp = 0;
 
-								if (m_pos.x + m_Scale.x * NEON_COL < posOldPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f
-									&&  m_pos.x + m_Scale.x * NEON_COL > posPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f)
+								if (m_pos.x + m_Scale.x * NEON_COL - 20.0f< posOldPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f
+									&&  m_pos.x + m_Scale.x * NEON_COL - 20.0f > posPlayer.x - scalePlayer.x * PLAYER_COL_X - 150.0f)
 								{//右
-									posPlayer.x = m_pos.x + m_Scale.x * NEON_COL + 179.0f;  //ブロックの右から抜けない
+									posPlayer.x = m_pos.x + m_Scale.x * NEON_COL + 159.0f;  //ブロックの右から抜けない
 
 									if (rotPlayer.y < 1.57f || rotPlayer.y > -1.57f)
 									{
@@ -359,6 +359,11 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 										pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_WALLRUN_L);  //プレイヤーを左からの壁走り状態にする
 									}
 								}
+							}
+
+							else
+							{
+								pPlayer->SetPlayerJump(CPlayer3D::PLAYERJUMP_SKY);  //プレイヤーを飛んでる状態にする
 							}
 						}
 						

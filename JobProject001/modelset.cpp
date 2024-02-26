@@ -54,6 +54,9 @@ HRESULT CModelSet::Init()
 	m_nIdxModel[TYPE_BOSSCORE] = pModel->Regist("data\\MODEL\\core.x");  //ボスコア
 	m_nIdxModel[TYPE_BEAM_PLA] = pModel->Regist("data\\MODEL\\beameffect.x");  //ビーム
 	m_nIdxModel[TYPE_BEAM_ENE] = pModel->Regist("data\\MODEL\\beameffect.x");  //ビーム
+	m_nIdxModel[TYPE_WALL] = pModel->Regist("data\\MODEL\\wall001.x");  //周りの壁
+	m_nIdxModel[TYPE_JAMP_BOARD] = pModel->Regist("data\\MODEL\\jamp_board.x");  //ジャンプ看板
+	m_nIdxModel[TYPE_STEP_BOARD] = pModel->Regist("data\\MODEL\\step_board.x");  //ステップ看板
 
 	//モデルの初期化処理
 	CObjectX::Init();
