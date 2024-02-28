@@ -57,6 +57,8 @@ HRESULT CModelSet::Init()
 	m_nIdxModel[TYPE_WALL] = pModel->Regist("data\\MODEL\\wall001.x");  //周りの壁
 	m_nIdxModel[TYPE_JAMP_BOARD] = pModel->Regist("data\\MODEL\\jamp_board.x");  //ジャンプ看板
 	m_nIdxModel[TYPE_STEP_BOARD] = pModel->Regist("data\\MODEL\\step_board.x");  //ステップ看板
+	m_nIdxModel[TYPE_ATTACK_BOARD] = pModel->Regist("data\\MODEL\\attack_board.x");  //攻撃看板
+	m_nIdxModel[TYPE_ATTACK_REFLECTION_BOARD] = pModel->Regist("data\\MODEL\\attack_reflection_board.x");  //攻撃反射看板
 
 	//モデルの初期化処理
 	CObjectX::Init();
@@ -109,30 +111,33 @@ void CModelSet::Update()
 
 #if _DEBUG
 
-	//Bキーが押された時
-	if (pInputKeyboard->GetPress(DIK_B) == true)
+	if (typetex == TYPE_SWORD)
 	{
-		rot.x += 0.05f;
-	}
+		//Bキーが押された時
+		if (pInputKeyboard->GetPress(DIK_B) == true)
+		{
+			rot.x += 0.05f;
+		}
 
-	//Nキーが押された時
-	if (pInputKeyboard->GetPress(DIK_N) == true)
-	{
-		rot.y += 0.05f;
-	}
+		//Nキーが押された時
+		if (pInputKeyboard->GetPress(DIK_N) == true)
+		{
+			rot.y += 0.05f;
+		}
 
-	//Mキーが押された時
-	if (pInputKeyboard->GetPress(DIK_M) == true)
-	{
-		rot.z += 0.05f;
-	}
+		//Mキーが押された時
+		if (pInputKeyboard->GetPress(DIK_M) == true)
+		{
+			rot.z += 0.05f;
+		}
 
-	//ENTERキーが押された時
-	if (pInputKeyboard->GetPress(DIK_RETURN) == true)
-	{
-		rot.x = 0.0f;
-		rot.y = 0.0f;
-		rot.z = 0.0f;
+		//ENTERキーが押された時
+		if (pInputKeyboard->GetPress(DIK_RETURN) == true)
+		{
+			rot.x = 0.0f;
+			rot.y = 0.0f;
+			rot.z = 0.0f;
+		}
 	}
 
 #endif

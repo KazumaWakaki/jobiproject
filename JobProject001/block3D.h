@@ -27,6 +27,7 @@ public:
 		BLOCK_NEONFLOOR = 0,  //ネオン床
 		BLOCK_NEON,  //ネオンブロック
 		BLOCK_NEONWALL,  //ネオン壁
+		BLOCK_TUTORIALWALL,  //チュートリアル壁
 		BLOCK_MAX
 	}BLOCK;
 

@@ -64,7 +64,11 @@ HRESULT CGame::Init(void)
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, -5800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 60.0f), CBlock3D::BLOCK_NEONFLOOR);  //チュートリアル用土台
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 60.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 4.0f, 15.0f), CBlock3D::BLOCK_NEONFLOOR);
 	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, -3100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 30.0f), CBlock3D::BLOCK_NEONFLOOR);
-	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(20.0f, 2.0f, 40.0f), CBlock3D::BLOCK_NEONFLOOR);
+	CBlock3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(40.0f, 2.0f, 40.0f), CBlock3D::BLOCK_NEONFLOOR);
+
+	//---------------------------------------------------------------
+	//チュートリアル壁
+	//CBlock3D::Create(D3DXVECTOR3(-300.0f, 0.0f, 1720.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 2.0f, 0.1f), CBlock3D::BLOCK_TUTORIALWALL);  //チュートリアル壁
 
 	//---------------------------------------------------------------
 	//一段階
@@ -89,7 +93,7 @@ HRESULT CGame::Init(void)
 	//---------------------------------------------------------------
 	//壁走り
 	CBlock3D::Create(D3DXVECTOR3(1400.0f, 50.0f, 4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.5f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
-	CBlock3D::Create(D3DXVECTOR3(-1400.0f, 50.0f, 9000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.7f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
+	CBlock3D::Create(D3DXVECTOR3(-1400.0f, 150.0f, 9000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.7f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
 	CBlock3D::Create(D3DXVECTOR3(600.0f, 200.0f, 11000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
 	CBlock3D::Create(D3DXVECTOR3(1000.0f, 200.0f, 17000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
 	CBlock3D::Create(D3DXVECTOR3(-2000.0f, 300.0f, 21000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
@@ -114,6 +118,8 @@ HRESULT CGame::Init(void)
 	//看板
 	CModelSet::Create(D3DXVECTOR3(1000.0f, 800.0f, -3000.0f), D3DXVECTOR3(-0.3f, 0.4f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_JAMP_BOARD);
 	CModelSet::Create(D3DXVECTOR3(-1000.0f, 500.0f, -1000.0f), D3DXVECTOR3(-0.3f, -0.5f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_STEP_BOARD);
+	//CModelSet::Create(D3DXVECTOR3(600.0f, 300.0f, 1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_ATTACK_BOARD);
+	CModelSet::Create(D3DXVECTOR3(600.0f, 300.0f, 1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_ATTACK_REFLECTION_BOARD);
 
 	//---------------------------------------------------------------
 	//敵3Dの生成
@@ -166,7 +172,7 @@ void CGame::Update(void)
 	CInputKeyboard *pInputKeyboard;
 	pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
 
-//#if _DEBUG
+#if _DEBUG
 
 	if (pInputKeyboard->GetTrigger(DIK_R) == true)  //ENTERキーが押された
 	{
@@ -178,7 +184,7 @@ void CGame::Update(void)
 		//PlaySound(SOUND_LABEL_SE_NEXT);
 	}
 
-//#endif
+#endif
 
 	switch (m_gameState)
 	{

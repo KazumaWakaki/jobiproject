@@ -33,10 +33,7 @@ HRESULT CResult::Init(void)
 	m_RetryMenu = RETRY_MENU_QUIT;   //ポーズメニュー
 
 	//オブジェクト2Dの生成処理
-	CObject2D::Create(D3DXVECTOR3(640.0f, 360.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(640.0f, 360.0, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), CObject2D::TYPE_RESULTCLEAR);
-
-	//オブジェクト2Dの生成処理
-	CObject2D::Create(D3DXVECTOR3(640.0f, 360.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(640.0f, 360.0, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), CObject2D::TYPE_RESULTEND);
+	CObject2D::Create(D3DXVECTOR3(640.0f, 360.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(640.0f, 360.0, 0.0f), D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f), CObject2D::TYPE_RESULT);
 
 	//BGMの再生
 	pSound->PlaySound(SOUND_LABEL_BGM_RESULT);

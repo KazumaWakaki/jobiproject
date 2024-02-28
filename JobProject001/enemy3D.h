@@ -60,8 +60,9 @@ public:
 	//チュートリアル敵状態管理
 	typedef enum
 	{
-		TUTORIAL_ENESTATE_NORMAL = 0,  //ノーマルモード
-		TUTORIAL_ENESTATE_ATTACKMODE,  //アタックモード
+		TUTORIAL_ENESTATE_NORMAL = 0,  //ノーマル
+		TUTORIAL_ENESTATE_ATTACKMODE,  //アタック
+		TUTORIAL_ENESTATE_ENDMODE,  //チュートリアル終了
 		TUTORIAL_ENESTATE_MAX
 	}TUTORIAL_ENESTATE;
 
@@ -83,12 +84,14 @@ public:
 	//取得
 	int GetLife(void) { return m_Life; };  //体力の取得
 	BOSS_BATTEL GetBossBattel(void) { return m_BossBattel; };  //ボスの戦闘態勢状態の取得
+	TUTORIAL_ENESTATE GetTutorialState(void) { return m_TutorialEne; };  //チュートリアル敵状態管理の取得
 
 	//設定
 	void SetLife(int Life);  //体力の設定
 	void SetBossDownState(bool BossDownState);  //ボスがダウンしてるかの設定
 	void SetEnemyState(ENEMYSTATE state, int nCounterState);  //状態の設定
 	void SetBossBattel(BOSS_BATTEL BossBattel);  //ボスの戦闘態勢状態の設定
+	void SetTutorialState(TUTORIAL_ENESTATE TutorialState);  //チュートリアル敵状態管理の設定
 
 	//当たり判定処理
 	static void HitEnemy(int nDamage, int nCnt);  //ヒット処理

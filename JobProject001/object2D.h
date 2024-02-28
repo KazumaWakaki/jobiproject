@@ -23,8 +23,7 @@ public:
 	{
 		TYPE_TITLE = 0,  //タイトル
 		TYPE_TUTORIAL,  //チュートリアル
-		TYPE_RESULTCLEAR,  //リザルトクリア
-		TYPE_RESULTEND,  //リザルトゲームオーバー
+		TYPE_RESULT,  //リザルト
 		TYPE_CROSS,  //クロスヘア
 		TYPE_RESPAWN,  //リスポーン
 		TYPE_RESPAWNBG,  //リスポーン背景

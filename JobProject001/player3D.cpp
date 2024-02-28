@@ -745,9 +745,11 @@ bool CPlayer3D::CollisionEnemy(CEnemy3D *pEnemy)
 //-------------------------------------------------------
 bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 {
-	if (pBullet == nullptr) {
+	if (pBullet == nullptr) 
+	{
 		return FALSE;
 	}
+
 	//キーボードの取得
 	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
 
@@ -777,6 +779,7 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 			D3DXVECTOR3 PosR = camera->GetPosR();  //カメラの注視点の取得
 			D3DXVECTOR3 fAngle = D3DXVECTOR3(PosR.x - PosV.x, (PosR.y - 100.0f) - (PosV.y - 100.0f), PosR.z - PosV.z);
 			D3DXVec3Normalize(&fAngle, &fAngle);
+			int typetex = pBullet->GetTypeTex();  //弾の種類取得
 
 			PLACOL.x = pos.x + sinf(rot.y) * PLAYER_COL_X;
 			PLACOL.z = pos.z + 50.0f + cosf(rot.y) * PLAYER_COL_Z;
@@ -817,8 +820,11 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 			//プレイヤーに当たった時
 			else if (fRangth < fLength)
 			{
-				//プレイヤーのヒット処理
-				CPlayer3D::HitPlayer(100);
+				if (typetex == CBullet3D::BULLETTYPE_ENEMY)
+				{
+					//プレイヤーのヒット処理
+					CPlayer3D::HitPlayer(100);
+				}
 
 				return TRUE;
 			}

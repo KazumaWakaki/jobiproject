@@ -53,7 +53,8 @@ HRESULT CBlock3D::Init()
 
 	m_nIdxModel[BLOCK_NEONFLOOR] = pModel->Regist("data\\MODEL\\neonfloor001.x");  //床ブロック
 	m_nIdxModel[BLOCK_NEON] = pModel->Regist("data\\MODEL\\neonwall001.x");  //ネオンブロック
-	m_nIdxModel[BLOCK_NEONWALL] = pModel->Regist("data\\MODEL\\runwall001.x");  //ネオンブロック
+	m_nIdxModel[BLOCK_NEONWALL] = pModel->Regist("data\\MODEL\\runwall001.x");  //ネオン壁
+	m_nIdxModel[BLOCK_TUTORIALWALL] = pModel->Regist("data\\MODEL\\tutorialwall001.x");  //チュートリアル壁
 
 	m_nCntPlaJamp = 0;
 
@@ -307,8 +308,9 @@ bool CBlock3D::CollisionPlayer(CPlayer3D *pPlayer)
 					}
 				}
 
-				//ネオン壁
-				if (typetex == BLOCK_NEONWALL)
+				//ネオン壁かチュートリアル壁
+				if (typetex == BLOCK_NEONWALL
+					|| typetex ==  BLOCK_TUTORIALWALL)
 				{
 					if (m_pos.y - m_Scale.y < posPlayer.y + scalePlayer.y * PLAYER_COL_Y
 						&&  m_pos.y + m_Scale.y * NEON_COL > posPlayer.y - scalePlayer.y)
@@ -417,13 +419,13 @@ bool CBlock3D::CollisionEnemy(CEnemy3D *pEnemy)
 		//m_apObject[nCnt]がNULLじゃなかった時
 		if (m_apObject[nCnt] != NULL)
 		{
-			D3DXVECTOR3 m_pos = m_apObject[nCnt]->GetPosition();  //ブロックの位置の取得
+			D3DXVECTOR3 m_pos = m_apObject[nCnt]->GetPosition();  //位置の取得
 			D3DXVECTOR3 m_move = m_apObject[nCnt]->GetMove();  //移動量の取得
-			D3DXVECTOR3 m_Scale = m_apObject[nCnt]->GetScale();  //ブロックのサイズの取得
+			D3DXVECTOR3 m_Scale = m_apObject[nCnt]->GetScale();  //サイズの取得
 			CObject::TYPE type;  //種類
-			int typetex = m_apObject[nCnt]->GetTypeTex();  //敵の種類取得
+			int typetex = m_apObject[nCnt]->GetTypeTex();  //ブロックの種類取得
 
-			//種類を取得
+			//オブジェクトの種類を取得
 			type = pEnemy->GetType();
 
 			//種類が敵の場合
@@ -433,6 +435,7 @@ bool CBlock3D::CollisionEnemy(CEnemy3D *pEnemy)
 				D3DXVECTOR3 posOldEnemy = pEnemy->GetPositionOld();  //敵の過去の位置の取得
 				D3DXVECTOR3 moveEnemy = pEnemy->GetMove();  //敵の移動量の取得
 				D3DXVECTOR3 scaleEnemy = pEnemy->GetScale();  //敵のサイズの取得
+				int typetex_Ene = pEnemy->GetTypeTex();  //敵の種類取得
 
 				if (typetex == BLOCK_NEONFLOOR)
 				{
@@ -484,6 +487,24 @@ bool CBlock3D::CollisionEnemy(CEnemy3D *pEnemy)
 								posEnemy.y = m_pos.y - m_Scale.y - 70.0f;  //ブロック抜けないようにする
 								moveEnemy.y = 0.0f;  //移動量を0にする
 							}
+						}
+					}
+				}
+
+				if (typetex == BLOCK_TUTORIALWALL)
+				{
+					D3DXMATERIAL redMat;
+					ZeroMemory(&redMat, sizeof(redMat));
+					redMat.MatD3D.Diffuse = D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f);
+					redMat.MatD3D.Emissive = D3DXCOLOR(0.8f, 0.0f, 0.0f, 1.0f);
+
+					m_apObject[nCnt]->SetMat(0, redMat);
+
+					if (typetex_Ene == CEnemy3D::TYPE_TUTORIAL_ENE)
+					{
+						if (pEnemy->GetTutorialState() == CEnemy3D::TUTORIAL_ENESTATE_ENDMODE)
+						{
+							m_apObject[nCnt]->Uninit(); //チュートリアル壁を消す
 						}
 					}
 				}

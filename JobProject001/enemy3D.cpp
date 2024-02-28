@@ -122,10 +122,24 @@ void CEnemy3D::Update(void)
 	//移動設定
 	//MoveEnemy();
 
-	if (typetex == TYPE_USUALLY)
+	if (typetex == TYPE_USUALLY
+		|| typetex == TYPE_TUTORIAL_ENE)
 	{
 		//重力を加える
 		move.y -= 4.0f;
+	}
+
+	if (typetex == TYPE_TUTORIAL_ENE)
+	{
+		if (m_Life < 9700)
+		{
+			m_TutorialEne = TUTORIAL_ENESTATE_ATTACKMODE;
+		}
+
+		if (m_Life < 9300)
+		{
+			m_TutorialEne = TUTORIAL_ENESTATE_ENDMODE;
+		}
 	}
 
 	m_nCntHit++;
@@ -327,8 +341,11 @@ void CEnemy3D::PlayerAttack(CPlayer3D *pPlayer)
 							&& fRot < 0.5f
 							&& fRot > -0.5f)
 						{
-							//敵のヒット処理
-							HitEnemy(200, nCnt);
+							if (m_apObject[nCnt]->m_TutorialEne != TUTORIAL_ENESTATE_ATTACKMODE)
+							{
+								//敵のヒット処理
+								HitEnemy(200, nCnt);
+							}
 						}
 					}
 				}
@@ -401,8 +418,8 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 						if (pos.x - scale.x * USUALLY_COR_X - USUALLY_RANGE < posPlayer.x + scalePlayer.x * PLAYER_COL_X
 							&&  pos.x + scale.x * USUALLY_COR_X + USUALLY_RANGE > posPlayer.x - scalePlayer.x * PLAYER_COL_X
 							&&  pos.y - scale.y * USUALLY_COR_Y < posPlayer.y + scalePlayer.y * PLAYER_COL_Y
-							&&  pos.z - scale.z * USUALLY_COR_Z - USUALLY_RANGE < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 130.0f
-							&&  pos.z + scale.z * USUALLY_COR_Z + USUALLY_RANGE > posPlayer.z - scalePlayer.z * PLAYER_COL_Z + 130.0f)
+							&&  pos.z - scale.z * USUALLY_COR_Z - USUALLY_RANGE - 1000.0f < posPlayer.z + scalePlayer.z * PLAYER_COL_Z + 130.0f
+							&&  pos.z + scale.z * USUALLY_COR_Z + USUALLY_RANGE + 1000.0f > posPlayer.z - scalePlayer.z * PLAYER_COL_Z + 130.0f)
 						{
 							if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 							{
@@ -420,9 +437,6 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 
 								//弾発射
 								CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
-
-								////ビーム生成
-								//CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
 
 								m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 							}
@@ -498,9 +512,6 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 										//弾発射
 										CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
 
-										////ビーム生成
-										//CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_ENE);
-
 										m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 									}
 
@@ -529,7 +540,7 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 
 							rot.y = fAngleY + 1.57f;
 
-							if (m_apObject[nCnt]->m_TutorialEne == TUTORIAL_ENESTATE_ATTACKMODE)
+							if (m_apObject[nCnt]->m_TutorialEne != TUTORIAL_ENESTATE_NORMAL)
 							{
 								if (m_apObject[nCnt]->m_nCntEnemyBullet == 60)
 								{
@@ -546,7 +557,7 @@ void CEnemy3D::ShootBullet(CPlayer3D *pPlayer)
 									m_apObject[nCnt]->ResetMat();
 
 									//弾発射
-									CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_ENEMY);
+									CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_TUTORIAL);
 
 									m_apObject[nCnt]->m_nCntEnemyBullet = 0;  //リセット
 								}
@@ -797,7 +808,7 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 				redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 				redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
 
-				 m_apObject[nCnt]->SetMat(0, redMat);
+				m_apObject[nCnt]->SetMat(0, redMat);
 				m_apObject[nCnt]->m_LifeGaugeSize = true;  //ライフゲージサイズが変更出来る状態にする
 			}
 
@@ -805,7 +816,14 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 			if (typetex == TYPE_TUTORIAL_ENE)
 			{
 				m_apObject[nCnt]->SetState(CObject::STATE_DAMAGE, 20);  //ダメージ状態
-				m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 60);  //ダメージ状態
+				m_apObject[nCnt]->SetEnemyState(ENEMYSTATE_DAMAGE, 40);  //ダメージ状態
+
+				D3DXMATERIAL redMat;
+				ZeroMemory(&redMat, sizeof(redMat));
+				redMat.MatD3D.Diffuse = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+				redMat.MatD3D.Emissive = D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f);
+
+				m_apObject[nCnt]->SetMat(0, redMat);
 			}
 
 			//SEの再生
@@ -818,9 +836,11 @@ void CEnemy3D::HitEnemy(int nDamage, int nCnt)
 //-------------------------------------------------------
 bool CEnemy3D::CollisionBullet(CBullet3D *pBullet)
 {
-	if (pBullet == nullptr) {
+	if (pBullet == nullptr) 
+	{
 		return FALSE;
 	}
+
 	//種類を取得
 	CObject::TYPE type = pBullet->GetType();
 
@@ -838,7 +858,8 @@ bool CEnemy3D::CollisionBullet(CBullet3D *pBullet)
 				int typetex = m_apObject[nCnt]->GetTypeTex();
 
 				//通常の時
-				if (typetex == TYPE_USUALLY)
+				if (typetex == TYPE_USUALLY
+					|| typetex == TYPE_TUTORIAL_ENE)
 				{
 					//敵と重なった時
 					if (pos.x + scale.x * USUALLY_COR_X > posBullet.x - scaleBullet.x * BULLET_COL_XZ
@@ -849,7 +870,7 @@ bool CEnemy3D::CollisionBullet(CBullet3D *pBullet)
 						&&  pos.z - scale.z * USUALLY_COR_Z < posBullet.z + scaleBullet.z * BULLET_COL_XZ)
 					{
 						//敵のヒット処理
-						CEnemy3D::HitEnemy(100, nCnt);
+						CEnemy3D::HitEnemy(200, nCnt);
 
 						pBullet->Uninit();
 
@@ -946,4 +967,11 @@ void CEnemy3D::SetEnemyState(ENEMYSTATE state, int nCounterState)
 void CEnemy3D::SetBossBattel(BOSS_BATTEL BossBattel)
 {
 	m_BossBattel = BossBattel;
+}
+//-------------------------------------------------------
+//チュートリアル敵状態管理
+//-------------------------------------------------------
+void CEnemy3D::SetTutorialState(TUTORIAL_ENESTATE TutorialState)
+{
+	m_TutorialEne = TutorialState;
 }

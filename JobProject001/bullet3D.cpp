@@ -58,6 +58,7 @@ HRESULT CBullet3D::Init(void)
 	//ƒ‚ƒfƒ‹‚ðéŒ¾
 	m_nIdxModel[BULLETTYPE_PLAYER] = pModel->Regist("data\\MODEL\\bullet001.x");  //ƒvƒŒƒCƒ„[‚Ì’e
 	m_nIdxModel[BULLETTYPE_ENEMY] = pModel->Regist("data\\MODEL\\bullet001.x");  //“G‚Ì’e
+	m_nIdxModel[BULLETTYPE_TUTORIAL] = pModel->Regist("data\\MODEL\\bullet001.x");  //“G‚Ìƒ`ƒ…[ƒgƒŠƒAƒ‹’e
 
 	//ƒIƒuƒWƒFƒNƒgX‚Ì‰Šú‰»ˆ—
 	CObjectX::Init();
@@ -208,19 +209,8 @@ CBullet3D *CBullet3D::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXVECTOR3 rot,
 		//ƒr[ƒ€‚ª‚È‚¢ó‘Ô‚É‚·‚é
 		m_Beam = false;
 
-		//“G‚Ì’e‚ÌˆÚ“®—ÊÝ’è
-		if (pBullet->m_type == BULLETTYPE_ENEMY)
-		{
-			//’e‚ÌˆÚ“®—Ê‚ÌÝ’è
-			pBullet->SetMove(move * ENEMY_SPEED);
-		}
-
-		//ƒvƒŒƒCƒ„[‚Ì’e‚ÌˆÚ“®—ÊÝ’è
-		else if (pBullet->m_type == BULLETTYPE_PLAYER)
-		{
-			//’e‚ÌˆÚ“®—Ê‚ÌÝ’è
-			pBullet->SetMove(move * ENEMY_SPEED);
-		}
+		//’e‚ÌˆÚ“®—ÊÝ’è
+		pBullet->SetMove(move * ENEMY_SPEED);
 
 		//nCount•ª‰ñ‚·
 		for (int nCount = 0; nCount < TYPE_MAX; nCount++)

@@ -45,10 +45,9 @@ HRESULT CObject2D::Init()
 
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();
 
-	m_nIdxTexture[TYPE_TITLE] = pTexture->Regist("data\\texture\\title001.png");
+	m_nIdxTexture[TYPE_TITLE] = pTexture->Regist("data\\texture\\Robot_Runners_title.jpg");
 	m_nIdxTexture[TYPE_TUTORIAL] = pTexture->Regist("data\\texture\\tutorial001.jpg");
-	m_nIdxTexture[TYPE_RESULTCLEAR] = pTexture->Regist("data\\texture\\result001.png");
-	m_nIdxTexture[TYPE_RESULTEND] = pTexture->Regist("data\\texture\\result001.png");
+	m_nIdxTexture[TYPE_RESULT] = pTexture->Regist("data\\texture\\Robot_Runners_result.jpg");
 	m_nIdxTexture[TYPE_CROSS] = pTexture->Regist("data\\texture\\cross.png");
 	m_nIdxTexture[TYPE_RESPAWN] = pTexture->Regist("data\\texture\\restart.jpg");
 	m_nIdxTexture[TYPE_RESPAWNBG] = pTexture->Regist("data\\texture\\BG001.jpg");

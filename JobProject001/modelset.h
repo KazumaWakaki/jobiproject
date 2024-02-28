@@ -35,6 +35,8 @@ public:
 		TYPE_WALL,  //周りの壁
 		TYPE_JAMP_BOARD,  //ジャンプ看板
 		TYPE_STEP_BOARD,  //ステップ看板
+		TYPE_ATTACK_BOARD,  //攻撃看板
+		TYPE_ATTACK_REFLECTION_BOARD,  //攻撃反射看板
 		TYPE_MAX
 	}TYPE;
 
