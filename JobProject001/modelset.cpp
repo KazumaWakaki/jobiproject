@@ -216,7 +216,7 @@ void CModelSet::Draw()
 {
 	int typetex = GetTypeTex();  //タイプ判定用
 
-	//if (typetex != TYPE_CHECKPOINT)
+	if (typetex != TYPE_CHECKPOINT)
 	{
 		//モデルXの描画処理
 		CObjectX::Draw();
@@ -373,7 +373,7 @@ bool CModelSet::CollisionBullet(CBullet3D *pBullet)
 						m_apObject[nCnt]->m_nCntBreakCore += 1;
 
 						//コアが二個破壊されたとき
-						if (m_apObject[nCnt]->m_nCntBreakCore == 2)
+						if (m_apObject[nCnt]->m_nCntBreakCore == 3)
 						{
 							m_apObject[nCnt]->SetBossCoreState(BOSSCORESTATE_BREAK);  //コアが壊れた状態にする
 							m_apObject[nCnt]->m_nCntBreakCore += 1;
@@ -485,7 +485,7 @@ void CModelSet::SwordMove(CPlayer3D *pPlayer)
 			SWORDROT SwordRot = m_apObject[nCnt]->GetSwordRot();  //日本刀の攻撃3段階の取得
 			CObject::TYPE type;  //種類
 			CPlayer3D::PLAYERJAMP jamp = pPlayer->GetJamp();  //プレイヤーのジャンプ状態取得
-			type = pPlayer->GetType();   //種類を取得
+			type = pPlayer->GetType();  //種類を取得
 			int typetex = m_apObject[nCnt]->GetTypeTex();  //タイプ判定用
 
 			//種類がプレイヤーの場合
@@ -633,6 +633,13 @@ void CModelSet::CoreMove(CEnemy3D *pEnemy)
 								pos.y = posEnemy.y + sinf(rotEnemy.x + D3DX_PI) * 150.0f;
 								pos.z = posEnemy.z + cosf(rotEnemy.y + D3DX_PI * -0.85f) * 400.0f;
 							}
+
+							if (m_apObject[nCnt]->m_nID == 7)
+							{
+								pos.x = posEnemy.x + sinf(rotEnemy.y + D3DX_PI * -0.85f) * 0.0f;
+								pos.y = posEnemy.y + sinf(rotEnemy.x + D3DX_PI) * 300.0f;
+								pos.z = posEnemy.z + cosf(rotEnemy.y + D3DX_PI * -0.85f) * 300.0f;
+							}
 						}
 					}
 
@@ -640,13 +647,6 @@ void CModelSet::CoreMove(CEnemy3D *pEnemy)
 					{
 						if (m_apObject[nCnt]->m_BreakCore == false)
 						{
-							if (m_apObject[nCnt]->m_nID == 7)
-							{
-								pos.x = posEnemy.x + sinf(rotEnemy.y + D3DX_PI * -0.85f) * 0.0f;
-								pos.y = posEnemy.y + sinf(rotEnemy.x + D3DX_PI) * 300.0f;
-								pos.z = posEnemy.z + cosf(rotEnemy.y + D3DX_PI * -0.85f) * 300.0f;
-							}
-
 							if (m_apObject[nCnt]->m_nID == 8)
 							{
 								pos.x = posEnemy.x + sinf(rotEnemy.y + D3DX_PI * -0.85f) * 150.0f;
@@ -660,7 +660,6 @@ void CModelSet::CoreMove(CEnemy3D *pEnemy)
 								pos.y = posEnemy.y + sinf(rotEnemy.x + D3DX_PI) * 300.0f;
 								pos.z = posEnemy.z + cosf(rotEnemy.y + D3DX_PI * -0.85f) * 300.0f;
 							}
-
 						}
 					}
 

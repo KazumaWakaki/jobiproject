@@ -68,7 +68,7 @@ HRESULT CGame::Init(void)
 
 	//---------------------------------------------------------------
 	//チュートリアル壁
-	//CBlock3D::Create(D3DXVECTOR3(-300.0f, 0.0f, 1720.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 2.0f, 0.1f), CBlock3D::BLOCK_TUTORIALWALL);  //チュートリアル壁
+	CBlock3D::Create(D3DXVECTOR3(-300.0f, 0.0f, 1720.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.0f, 2.0f, 0.1f), CBlock3D::BLOCK_TUTORIALWALL);  //チュートリアル壁
 
 	//---------------------------------------------------------------
 	//一段階
@@ -96,14 +96,14 @@ HRESULT CGame::Init(void)
 	CBlock3D::Create(D3DXVECTOR3(-1400.0f, 150.0f, 9000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.7f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
 	CBlock3D::Create(D3DXVECTOR3(600.0f, 200.0f, 11000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
 	CBlock3D::Create(D3DXVECTOR3(1000.0f, 200.0f, 17000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
-	CBlock3D::Create(D3DXVECTOR3(-2000.0f, 300.0f, 21000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.0f), CBlock3D::BLOCK_NEONWALL);
+	CBlock3D::Create(D3DXVECTOR3(-2000.0f, 300.0f, 21000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.9f, 2.0f, 4.2f), CBlock3D::BLOCK_NEONWALL);
 
 	//---------------------------------------------------------------
 	//モデルの生成
 	//---------------------------------------------------------------
 	//チェックポイント
 	CModelSet::Create(D3DXVECTOR3(0.0f, -100.0f, -5400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_CHECKPOINT);  //チュートリアル用
-	CModelSet::Create(D3DXVECTOR3(0.0f, 0.0f, 120.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_CHECKPOINT);
+	CModelSet::Create(D3DXVECTOR3(0.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_CHECKPOINT);
 	CModelSet::Create(D3DXVECTOR3(-300.0f, 0.0f, 1700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_CHECKPOINT);
 	CModelSet::Create(D3DXVECTOR3(0.0f, 100.0f, 6000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(30.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_CHECKPOINT);
 	CModelSet::Create(D3DXVECTOR3(0.0f, 0.0f, 7000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(10.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_CHECKPOINT);
@@ -116,10 +116,10 @@ HRESULT CGame::Init(void)
 
 	//---------------------------------------------------------------
 	//看板
-	CModelSet::Create(D3DXVECTOR3(1000.0f, 800.0f, -3000.0f), D3DXVECTOR3(-0.3f, 0.4f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_JAMP_BOARD);
+	CModelSet::Create(D3DXVECTOR3(1000.0f, 700.0f, -3000.0f), D3DXVECTOR3(-0.2f, 0.5f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_JAMP_BOARD);
 	CModelSet::Create(D3DXVECTOR3(-1000.0f, 500.0f, -1000.0f), D3DXVECTOR3(-0.3f, -0.5f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_STEP_BOARD);
-	//CModelSet::Create(D3DXVECTOR3(600.0f, 300.0f, 1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_ATTACK_BOARD);
-	CModelSet::Create(D3DXVECTOR3(600.0f, 300.0f, 1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_ATTACK_REFLECTION_BOARD);
+	CModelSet::Create(D3DXVECTOR3(600.0f, 300.0f, 1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_ATTACK_BOARD);
+	CModelSet::Create(D3DXVECTOR3(-1300.0f, 300.0f, 1500.0f), D3DXVECTOR3(0.0f, -0.5f, 0.0f), D3DXVECTOR3(5.0f, 5.0f, 1.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_ATTACK_REFLECTION_BOARD);
 
 	//---------------------------------------------------------------
 	//敵3Dの生成
@@ -131,12 +131,8 @@ HRESULT CGame::Init(void)
 	CEnemy3D::Create(D3DXVECTOR3(-770.0f, 300.0f, 19000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEnemy3D::TYPE_USUALLY, 200);
 
 	//---------------------------------------------------------------
-	//ボス
-	//CEnemy3D::Create(D3DXVECTOR3(-500.0f, 80.0f, 32500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.5f, 0.5f, 0.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEnemy3D::TYPE_BOSS, 2000);
-
-	//---------------------------------------------------------------
 	//プレイヤー3Dの生成
-	CPlayer3D::Create(D3DXVECTOR3(0.0f, 1000.0f, -7500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CPlayer3D::Create(D3DXVECTOR3(0.0f, 100.0f, -7500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.3f, 0.3f, 0.3f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//BGMの再生
 	pSound->PlaySound(SOUND_LABEL_BGM_GAME);

@@ -648,28 +648,23 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 					{
 						if (m_CreateCore == false)
 						{
+							m_CreateCore = true;
+
 							//一個目のコアを出す (番号5)
-							CModelSet::Create(D3DXVECTOR3(pos.x - 200.0f, pos.y, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
+							CModelSet::Create(D3DXVECTOR3(pos.x - 200.0f, pos.y + 20.0f, pos.z - 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
 
 							//二個目のコアを出す (番号6)
-							CModelSet::Create(D3DXVECTOR3(pos.x + 200.0f, pos.y, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
+							CModelSet::Create(D3DXVECTOR3(pos.x + 200.0f, pos.y + 20.0f, pos.z - 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
 
 							//三個目のコアを出す (番号7)
-							CModelSet::Create(D3DXVECTOR3(pos.x, pos.y - 200.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
+							CModelSet::Create(D3DXVECTOR3(pos.x, pos.y + 300.0f, pos.z - 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
 
-							//四個目のコアを出す (番号8)
-							CModelSet::Create(D3DXVECTOR3(pos.x, pos.y - 200.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
-
-							//五個目のコアを出す (番号9)
-							CModelSet::Create(D3DXVECTOR3(pos.x, pos.y - 200.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
-
-							m_CreateCore = true;
 							pModelSet->SetBossCoreState(pModelSet->BOSSCORESTATE_LIVE);
 						}
 					}
 
 					//ボスの体力が1000以下になった時
-					if (m_apObject[nCnt]->m_Life <= 0)
+					if (m_apObject[nCnt]->m_Life < 1100)
 					{
 						m_apObject[nCnt]->SetBossBattel(BOSS_BATTEL_2);  //二段階目にする
 						m_apObject[nCnt]->m_BossDownState = false;  //ダウン状態から復帰する
@@ -680,25 +675,34 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 						if (rot.x > -0.09f)
 						{
 							rot.x = -0.09f;  //元に戻す
+
 							pModelSet->SetBreakCore(false);  //コアが壊れていない状態にする
 						}
 					}
 				}
 
-				//二段階目のとき
-				if (BossBattel == BOSS_BATTEL_2)
-				{
-					//コアがないとき
-					if (BossCoreState == pModelSet->BOSSCORESTATE_NONE)
-					{
-						if (m_CreateCore == false)
-						{
-							m_CreateCore = true;
+				////二段階目のとき
+				//if (BossBattel == BOSS_BATTEL_2)
+				//{
+				//	//コアがないとき
+				//	if (BossCoreState == pModelSet->BOSSCORESTATE_NONE)
+				//	{
+				//		if (m_CreateCore == false)
+				//		{
+				//			m_CreateCore = true;
 
-							pModelSet->SetBossCoreState(pModelSet->BOSSCORESTATE_LIVE);  //コアがある状態にする
-						}
-					}
-				}
+				//			//四個目のコアを出す (番号8)
+				//			CModelSet::Create(D3DXVECTOR3(pos.x, pos.y + 200.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
+
+				//			//五個目のコアを出す (番号9)
+				//			CModelSet::Create(D3DXVECTOR3(pos.x + 300.0f, pos.y + 400.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(1.5f, 1.5f, 1.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BOSSCORE);
+
+				//			pModelSet->SetBossCoreState(pModelSet->BOSSCORESTATE_LIVE);  //コアがある状態にする
+
+				//			break;
+				//		}
+				//	}
+				//}
 
 				//コアが壊れたとき
 				if (pModelSet->GetBossCoreState() == pModelSet->BOSSCORESTATE_BREAK && m_apObject[nCnt]->m_BossDownState == false)
@@ -733,11 +737,6 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 
 				m_apObject[nCnt]->SetPosition(pos);  //位置の設定
 				m_apObject[nCnt]->SetRotation(rot);  //向きの設定
-
-				//-------------------------------------------------------
-				//敵のデバック表示
-				//-------------------------------------------------------
-				//CManager::GetInstance()->GetDebugProc()->Print("ボスがダウンするスピード [%d]\n", m_apObject[nCnt]->m_nCntDownSpeed);
 			}
 		}
 	}

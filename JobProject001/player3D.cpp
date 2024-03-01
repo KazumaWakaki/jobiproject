@@ -308,9 +308,6 @@ void CPlayer3D::Update()
 			{
 				//重力を加える
 				move.y -= 3.0f;
-
-				//降下状態にする
-				m_jump = PLAYERJUMP_GETOFF;
 			}
 
 			if (m_jump == PLAYERJUMP_WALLRUN_R || m_jump == PLAYERJUMP_WALLRUN_L)
@@ -422,6 +419,7 @@ void CPlayer3D::Update()
 	{
 		if (m_BossState == false)
 		{
+			//ボスの生成
 			CEnemy3D::Create(D3DXVECTOR3(-500.0f, 80.0f, 32500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.5f, 0.5f, 0.5f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEnemy3D::TYPE_BOSS, 2000);
 
 			m_BossState = true;
@@ -745,10 +743,10 @@ bool CPlayer3D::CollisionEnemy(CEnemy3D *pEnemy)
 //-------------------------------------------------------
 bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 {
-	if (pBullet == nullptr) 
-	{
-		return FALSE;
-	}
+	//if (pBullet == nullptr) 
+	//{
+	//	return FALSE;
+	//}
 
 	//キーボードの取得
 	CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();
@@ -777,7 +775,7 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 			CCamera *camera = CManager::GetInstance()->GetCamera();  //カメラのインスタンス取得
 			D3DXVECTOR3 PosV = camera->GetPosV();  //カメラの視点の取得
 			D3DXVECTOR3 PosR = camera->GetPosR();  //カメラの注視点の取得
-			D3DXVECTOR3 fAngle = D3DXVECTOR3(PosR.x - PosV.x, (PosR.y - 100.0f) - (PosV.y - 100.0f), PosR.z - PosV.z);
+			D3DXVECTOR3 fAngle = D3DXVECTOR3(PosR.x - PosV.x, (PosR.y + 100.0f) - (PosV.y + 100.0f), PosR.z - PosV.z);
 			D3DXVec3Normalize(&fAngle, &fAngle);
 			int typetex = pBullet->GetTypeTex();  //弾の種類取得
 
@@ -807,20 +805,18 @@ bool CPlayer3D::CollisionBullet(CBullet3D *pBullet)
 			if (fRangth > fLength
 				&& fRangth < 1000.0f
 				&& pInputKeyboard->GetTrigger(DIK_V) == true || pInputPad->GetTrigger(CInputPad::BUTTON_RB, 0))
-			{
+			{ 
+				//敵の弾消す
 				pBullet->Uninit();
 
 				//弾発射
 				CBullet3D::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(fAngle.x * BULLETSPEED, fAngle.y * BULLETSPEED, fAngle.z * BULLETSPEED), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.8f, 0.8f, 0.8f), CBullet3D::BULLETTYPE_PLAYER);
-
-				////ビーム生成
-				//CModelSet::Create(D3DXVECTOR3(pos.x, pos.y, pos.z), D3DXVECTOR3(0.0f, rot.y, 0.0f), D3DXVECTOR3(2.0f, 2.0f, 2.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CModelSet::TYPE_BEAM_PLA);
 			}
 
 			//プレイヤーに当たった時
 			else if (fRangth < fLength)
 			{
-				if (typetex == CBullet3D::BULLETTYPE_ENEMY)
+				if (typetex != CBullet3D::BULLETTYPE_TUTORIAL)
 				{
 					//プレイヤーのヒット処理
 					CPlayer3D::HitPlayer(100);
