@@ -664,21 +664,21 @@ void CEnemy3D::EnemyBattelState(CModelSet *pModelSet)
 					}
 
 					//ボスの体力が1000以下になった時
-					if (m_apObject[nCnt]->m_Life < 1100)
-					{
-						m_apObject[nCnt]->SetBossBattel(BOSS_BATTEL_2);  //二段階目にする
-						m_apObject[nCnt]->m_BossDownState = false;  //ダウン状態から復帰する
-						m_CreateCore = false;  //コアがない状態にする
+					//if (m_apObject[nCnt]->m_Life < 1100)
+					//{
+					//	m_apObject[nCnt]->SetBossBattel(BOSS_BATTEL_2);  //二段階目にする
+					//	m_apObject[nCnt]->m_BossDownState = false;  //ダウン状態から復帰する
+					//	m_CreateCore = false;  //コアがない状態にする
 
-						rot.x += 0.005f;  //ボスがダウンから戻る速度
+					//	rot.x += 0.005f;  //ボスがダウンから戻る速度
 
-						if (rot.x > -0.09f)
-						{
-							rot.x = -0.09f;  //元に戻す
+					//	if (rot.x > -0.09f)
+					//	{
+					//		rot.x = -0.09f;  //元に戻す
 
-							pModelSet->SetBreakCore(false);  //コアが壊れていない状態にする
-						}
-					}
+					//		pModelSet->SetBreakCore(false);  //コアが壊れていない状態にする
+					//	}
+					//}
 				}
 
 				////二段階目のとき
